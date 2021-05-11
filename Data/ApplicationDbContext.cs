@@ -47,8 +47,10 @@ namespace DeliveryApp.Data
                 Id = ADMIN_ID,
                 Email = "admin@gmail.com",
                 NormalizedEmail = "ADMIN@GMAIL.COM",
-                UserName = "admin@gmail.com",
-                NormalizedUserName = "ADMIN@GMAIL.COM",
+                UserName = "Admin",
+                NormalizedUserName = "ADMIN",
+                FirstName = "Mohamed",
+                LastName = "Sheashaa",
                 EmailConfirmed = true
            };
 

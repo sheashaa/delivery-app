@@ -31,6 +31,10 @@ export enum AuthenticationResultStatus {
 
 export interface IUser {
   name?: string;
+  email?: string;
+  family_name?: string;
+  given_name?: string;
+  role?: string;
 }
 
 @Injectable({
@@ -59,6 +63,18 @@ export class AuthorizeService {
     return from(this.ensureUserManagerInitialized())
       .pipe(mergeMap(() => from(this.userManager.getUser())),
         map(user => user && user.access_token));
+  }
+
+  public async signInSilent(): Promise<void> {
+    await this.ensureUserManagerInitialized();
+    let user: User = null;
+    try {
+      user = await this.userManager.signinSilent(this.createArguments());
+      this.userSubject.next(user.profile);
+    } catch (silentError) {
+      // User might not be authenticated, fallback to popup authentication
+      console.log('Silent authentication error: ', silentError);
+    }
   }
 
   // We try to authenticate the user in three different ways:

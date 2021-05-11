@@ -23,8 +23,6 @@ namespace DeliveryApp.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
         }
 
-        public string Username { get; set; }
-
         [TempData]
         public string StatusMessage { get; set; }
 
@@ -33,21 +31,23 @@ namespace DeliveryApp.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Phone]
-            [Display(Name = "Phone number")]
-            public string PhoneNumber { get; set; }
+            [Required]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 3)]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+
+            [Required]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 3)]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
         }
 
-        private async Task LoadAsync(ApplicationUser user)
+        private void Load(ApplicationUser user)
         {
-            var userName = await _userManager.GetUserNameAsync(user);
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
-            Username = userName;
-
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                FirstName = user.FirstName,
+                LastName = user.LastName
             };
         }
 
@@ -59,7 +59,7 @@ namespace DeliveryApp.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            await LoadAsync(user);
+            Load(user);
             return Page();
         }
 
@@ -73,19 +73,18 @@ namespace DeliveryApp.Areas.Identity.Pages.Account.Manage
 
             if (!ModelState.IsValid)
             {
-                await LoadAsync(user);
+                Load(user);
                 return Page();
             }
 
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            if (Input.PhoneNumber != phoneNumber)
+            user.FirstName = Input.FirstName;
+            user.LastName = Input.LastName;
+
+            var updateResult = await _userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
-                {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
-                    return RedirectToPage();
-                }
+                StatusMessage = "Unexpected error when trying to change name.";
+                return RedirectToPage();
             }
 
             await _signInManager.RefreshSignInAsync(user);

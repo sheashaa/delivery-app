@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DeliveryApp.Data;
 using DeliveryApp.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DeliveryApp.Controllers
 {
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class OrdersController : ControllerBase
