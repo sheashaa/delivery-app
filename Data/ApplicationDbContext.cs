@@ -46,7 +46,10 @@ namespace DeliveryApp.Data
             {
                 Id = ADMIN_ID,
                 Email = "admin@gmail.com",
-                UserName = "admin@gmail.com"
+                NormalizedEmail = "ADMIN@GMAIL.COM",
+                UserName = "admin@gmail.com",
+                NormalizedUserName = "ADMIN@GMAIL.COM",
+                EmailConfirmed = true
            };
 
             PasswordHasher<ApplicationUser> hasher = new PasswordHasher<ApplicationUser>();
@@ -80,6 +83,8 @@ namespace DeliveryApp.Data
                 NormalizedName = "CUSTOMER",
                 Id = CUSTOMER_ROLE_ID,
             });
+
+            builder.Entity<OrderItem>().HasOne(p => p.Product).WithOne().OnDelete(DeleteBehavior.NoAction);
         }
 
         public virtual DbSet<Branch> Branches { get; set; }

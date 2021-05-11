@@ -103,13 +103,15 @@ namespace DeliveryApp.Data.Migrations
                         {
                             Id = "F6C7E8B8-A875-41C2-B441-AB933F29ABD2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c88f8b5e-863a-4500-a11a-fd773a3f36c0",
+                            ConcurrencyStamp = "f5f37ee4-92f7-48ea-9b70-66ecc37d21f0",
                             Email = "admin@gmail.com",
-                            EmailConfirmed = false,
+                            EmailConfirmed = true,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEFMrjTI60oxMdnY0AeoAUis3kklVza7uewDvvn6OewxgKZBcFuMTJ7/IpImK9nq7AQ==",
+                            NormalizedEmail = "ADMIN@GMAIL.COM",
+                            NormalizedUserName = "ADMIN@GMAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKuAdTWYd7xP6WcYZeCVf/x6EsVDTS5SHroWlOvCzSW8oVFLXQ/qKInNBxywCtfRZw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f55e9c6e-21bf-467a-9366-d148c18d53d3",
+                            SecurityStamp = "928881ca-0470-4132-ac8f-72635f2bd811",
                             TwoFactorEnabled = false,
                             UserName = "admin@gmail.com"
                         });
@@ -140,7 +142,7 @@ namespace DeliveryApp.Data.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RestaurantId")
+                    b.Property<int>("RestaurantId")
                         .HasColumnType("int");
 
                     b.Property<string>("Street")
@@ -175,7 +177,7 @@ namespace DeliveryApp.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("BranchId")
+                    b.Property<int>("BranchId")
                         .HasColumnType("int");
 
                     b.Property<string>("CourierId")
@@ -209,7 +211,7 @@ namespace DeliveryApp.Data.Migrations
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("DeliveryId")
+                    b.Property<int>("DeliveryId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -231,13 +233,13 @@ namespace DeliveryApp.Data.Migrations
                     b.Property<double>("Discount")
                         .HasColumnType("float");
 
-                    b.Property<int?>("OrderId")
+                    b.Property<int>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<int?>("ProductId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
@@ -247,7 +249,8 @@ namespace DeliveryApp.Data.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductId")
+                        .IsUnique();
 
                     b.ToTable("OrderItems");
                 });
@@ -259,7 +262,7 @@ namespace DeliveryApp.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("BranchId")
+                    b.Property<int>("BranchId")
                         .HasColumnType("int");
 
                     b.Property<int>("Count")
@@ -440,28 +443,28 @@ namespace DeliveryApp.Data.Migrations
                         new
                         {
                             Id = "555EA1A2-7BEF-4018-82D8-7679F5D17D1C",
-                            ConcurrencyStamp = "7b5b75d8-7bf7-4a21-89d8-b73adf2a53c4",
+                            ConcurrencyStamp = "7ae72310-dc48-4b9b-b7d4-03130eeae5af",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "0A3A9831-8DBA-4F86-996A-FD3A40CC0030",
-                            ConcurrencyStamp = "42892ba0-c5db-47de-b88d-9b0415cdd460",
+                            ConcurrencyStamp = "aa3d2faa-3dd9-428d-b1c4-0a09f588c892",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
                             Id = "3E0A855D-6FCB-4C23-850E-C13B567621A5",
-                            ConcurrencyStamp = "8c4b811b-a9f0-40e5-a73b-b6c85e8253e7",
+                            ConcurrencyStamp = "5614dae4-acb8-4151-842f-0747f0ce6377",
                             Name = "Courier",
                             NormalizedName = "COURIER"
                         },
                         new
                         {
                             Id = "4973D731-E8B6-4982-8D96-0E4A0368E581",
-                            ConcurrencyStamp = "c0b2a167-23f0-4d59-9285-fc41daf86343",
+                            ConcurrencyStamp = "464efcab-7f20-46a4-99ac-44a4003730b6",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -601,7 +604,9 @@ namespace DeliveryApp.Data.Migrations
                 {
                     b.HasOne("DeliveryApp.Models.Restaurant", "Restaurant")
                         .WithMany("Branches")
-                        .HasForeignKey("RestaurantId");
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Restaurant");
                 });
@@ -610,7 +615,9 @@ namespace DeliveryApp.Data.Migrations
                 {
                     b.HasOne("DeliveryApp.Models.Branch", "Branch")
                         .WithMany()
-                        .HasForeignKey("BranchId");
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DeliveryApp.Models.ApplicationUser", "Courier")
                         .WithMany()
@@ -629,7 +636,9 @@ namespace DeliveryApp.Data.Migrations
 
                     b.HasOne("DeliveryApp.Models.Delivery", "Delivery")
                         .WithMany("Orders")
-                        .HasForeignKey("DeliveryId");
+                        .HasForeignKey("DeliveryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Customer");
 
@@ -640,11 +649,15 @@ namespace DeliveryApp.Data.Migrations
                 {
                     b.HasOne("DeliveryApp.Models.Order", "Order")
                         .WithMany("Items")
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DeliveryApp.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId");
+                        .WithOne()
+                        .HasForeignKey("DeliveryApp.Models.OrderItem", "ProductId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Order");
 
@@ -655,7 +668,9 @@ namespace DeliveryApp.Data.Migrations
                 {
                     b.HasOne("DeliveryApp.Models.Branch", "Branch")
                         .WithMany("Products")
-                        .HasForeignKey("BranchId");
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Branch");
                 });

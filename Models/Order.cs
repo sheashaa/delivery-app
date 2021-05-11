@@ -12,7 +12,9 @@ namespace DeliveryApp.Models
         public DateTime DateTime { get; set; }
         public string Adress { get; set; }
         public virtual ICollection<OrderItem> Items { get; set; }
+        public int DeliveryId { get; set; }
         public virtual Delivery Delivery { get; set; }
+        public string CustomerId { get; set; }
         public virtual ApplicationUser Customer { get; set; }
 
     }

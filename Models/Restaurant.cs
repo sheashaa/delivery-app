@@ -12,6 +12,7 @@ namespace DeliveryApp.Models
         public string Name { get; set; }
         public string Website { get; set; }
         public virtual ICollection<Branch> Branches { get; set; }
+        public string ManagerId { get; set; }
         public virtual ApplicationUser Manager { get; set; }
     }
 }
