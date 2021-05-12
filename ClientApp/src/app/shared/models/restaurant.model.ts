@@ -1,10 +1,11 @@
-import {Branch} from './branch.model';
+import { Branch } from './branch.model';
+import { User } from './user.model';
 
 export interface Restaurant {
-  id:Number;
-  name:String;
-  website:String;
-  managerId:Number;
+  id: number;
+  name: string;
+  website: string;
   branches: Branch[];
-  manager;
+  managerId: number;
+  manager: User;
 }

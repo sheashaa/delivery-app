@@ -10,7 +10,7 @@ namespace DeliveryApp.Models
     {
         public int Id { get; set; }
         public DateTime DateTime { get; set; }
-        public string Adress { get; set; }
+        public string Address { get; set; }
         public virtual ICollection<OrderItem> Items { get; set; }
         public int DeliveryId { get; set; }
         public virtual Delivery Delivery { get; set; }

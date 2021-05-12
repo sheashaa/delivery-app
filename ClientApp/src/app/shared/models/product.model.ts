@@ -1,14 +1,13 @@
-import {Category} from './category.model';
-import {Branch} from './branch.model';
+import { Category } from './category.model';
+import { Branch } from './branch.model';
 
 export interface Product {
-  id:Number;
-  name:String;
-  description:String;
-  price:Number;
-  image:String;
-  count:Number;
-  branchId:Number;
-  categories:Category[];
-  branch:Branch;
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  image: string;
+  branchId: number;
+  categories: Category[];
+  branch: Branch;
 }
