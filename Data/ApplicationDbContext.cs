@@ -87,6 +87,8 @@ namespace DeliveryApp.Data
             });
 
             builder.Entity<OrderItem>().HasOne(p => p.Product).WithOne().OnDelete(DeleteBehavior.NoAction);
+            builder.Entity<Order>().Property(s => s.DateTime).HasDefaultValueSql("GETDATE()");
+            builder.Entity<Delivery>().Property(s => s.DateTime).HasDefaultValueSql("GETDATE()");
         }
 
         public virtual DbSet<Branch> Branches { get; set; }
