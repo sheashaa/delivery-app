@@ -91,6 +91,7 @@ namespace DeliveryApp.Data
             builder.Entity<Delivery>().Property(s => s.DateTime).HasDefaultValueSql("GETDATE()");
         }
 
+        public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<Branch> Branches { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Delivery> Deliveries { get; set; }

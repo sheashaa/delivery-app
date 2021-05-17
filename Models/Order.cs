@@ -12,7 +12,8 @@ namespace DeliveryApp.Models
         public int Id { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? DateTime { get; set; }
-        public string Address { get; set; }
+        public int? AddressId { get; set; }
+        public virtual Address Address { get; set; }
         public virtual ICollection<OrderItem> Items { get; set; }
         public int? DeliveryId { get; set; }
         public virtual Delivery Delivery { get; set; }

@@ -44,14 +44,12 @@
     <None Remove="ClientApp\src\app\shared\models\delivery.model.ts" />
     <None Remove="ClientApp\src\app\shared\models\order.model.ts" />
     <None Remove="ClientApp\src\app\shared\models\orderitem.model.ts" />
-    <None Remove="ClientApp\src\app\shared\models\user.model.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\delivery.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\order.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\orderitem.model.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\shared\models\user.model.ts" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

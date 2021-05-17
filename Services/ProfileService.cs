@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace DeliveryApp.Services
@@ -26,22 +27,27 @@ namespace DeliveryApp.Services
 
             IList<string> roles = await UserManager.GetRolesAsync(user);
 
+            Claim idClaim = new Claim(JwtClaimTypes.Id, user.Id);
             Claim userNameClaim = new Claim(JwtClaimTypes.Name, user.UserName);
             Claim emailClaim = new Claim(JwtClaimTypes.Email, user.Email);
             Claim firstNameClaim = new Claim(JwtClaimTypes.GivenName, user.FirstName);
             Claim lastNameClaim = new Claim(JwtClaimTypes.FamilyName, user.LastName);
-
+            Claim addressesClaim = new Claim("saved_addresses", JsonSerializer.Serialize(user.SavedAddresses));
+            
             IList<Claim> roleClaims = new List<Claim>();
             foreach (string role in roles)
             {
                 roleClaims.Add(new Claim(JwtClaimTypes.Role, role));
             }
 
+
+            context.IssuedClaims.Add(idClaim);
             context.IssuedClaims.Add(userNameClaim);
             context.IssuedClaims.Add(emailClaim);
             context.IssuedClaims.Add(firstNameClaim);
             context.IssuedClaims.Add(lastNameClaim);
             context.IssuedClaims.AddRange(roleClaims);
+            context.IssuedClaims.Add(addressesClaim);
         }
 
         public Task IsActiveAsync(IsActiveContext context)
