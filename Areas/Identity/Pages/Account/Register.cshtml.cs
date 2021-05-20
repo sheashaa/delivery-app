@@ -39,6 +39,8 @@ namespace DeliveryApp.Areas.Identity.Pages.Account
 
         public string ReturnUrl { get; set; }
 
+        public string Role { get; set; }
+
         public class InputModel
         {
             [Required]
@@ -68,9 +70,10 @@ namespace DeliveryApp.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
         }
 
-        public void OnGet(string returnUrl = null)
+        public void OnGet(string returnUrl = null, string role = null)
         {
             ReturnUrl = returnUrl;
+            Role = role;
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)

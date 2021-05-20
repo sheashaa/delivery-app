@@ -1,6 +1,6 @@
 import { Branch } from "./branch.model";
 import { Order } from "./order.model";
-import { User } from "./user.model";
+//import { User } from "./user.model";
 
 export interface Delivery {
   id: number;
@@ -9,5 +9,5 @@ export interface Delivery {
   branch: Branch;
   orders: Order[];
   courierId: number;
-  courser: User; 
+  //courser: User; 
 }

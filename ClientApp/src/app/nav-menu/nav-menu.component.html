@@ -1,34 +1,49 @@
-<header>
-  <nav
-    class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"
-  >
+<header id="header" class="fixed-top">
+  <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark">
     <div class="container">
-      <a class="navbar-brand" [routerLink]="['/']">DeliveryApp</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target=".navbar-collapse"
-        aria-label="Toggle navigation"
-        [attr.aria-expanded]="isExpanded"
-        (click)="toggle()"
-      >
+      <h1 class="logo mr-auto"><a href="index.html">Restaurantly</a></h1>
+      <!--<a href="index.html" class="logo mr-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+      <button class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target=".navbar-collapse"
+              aria-label="Toggle navigation"
+              [attr.aria-expanded]="isExpanded"
+              (click)="toggle()">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div
-        class="navbar-collapse collapse d-sm-inline-flex justify-content-end"
-        [ngClass]="{ show: isExpanded }"
-      >
+      <div class="nav-menu navbar-collapse collapse d-sm-inline-flex justify-content-end"
+           [ngClass]="{ show: isExpanded }">
         <ul class="navbar-nav flex-grow">
-          <li
-            class="nav-item"
-            [routerLinkActive]="['link-active']"
-            [routerLinkActiveOptions]="{ exact: true }"
-          >
-            <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
+          <!--<li class="nav-item"
+      [routerLinkActive]="['link-active']"
+      [routerLinkActiveOptions]="{ exact: true }">
+    <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
+  </li>-->
+          <li class="active"><a href="index.html">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#menu">Menu</a></li>
+          <li><a href="#specials">Specials</a></li>
+          <li><a href="#events">Events</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#chefs">Chefs</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li class="book-a-table text-center"><a href="#book-a-table">Book a table</a></li>
+          <li *ngIf="isAuthenticated | async">
+            <a [routerLink]='["/authentication/profile"]' title="Manage">Hello {{ userName | async }}</a>
           </li>
+          <li *ngIf="isAuthenticated | async">
+            <a [routerLink]='["/authentication/logout"]' [state]='{ local: true }' title="Logout">Logout</a>
+          </li>
+          <li *ngIf="!(isAuthenticated | async)">
+            <a [routerLink]='["/authentication/register"]' [queryParams]='{role: role}' queryParamsHandling='merge'>Register</a>
+          </li>
+          <li *ngIf="!(isAuthenticated | async)">
+            <a [routerLink]='["/authentication/login"]'>Login</a>
+          </li>
+
         </ul>
-        <app-login-menu></app-login-menu>
+        <!--<app-login-menu></app-login-menu>-->
       </div>
     </div>
   </nav>

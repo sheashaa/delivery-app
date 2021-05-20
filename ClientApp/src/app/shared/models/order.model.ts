@@ -1,6 +1,6 @@
 import { Delivery } from "./delivery.model";
 import { OrderItem } from "./orderitem.model";
-import { User } from "./user.model";
+//import { User } from "./user.model";
 
 export interface Order {
   id: number;
@@ -10,5 +10,5 @@ export interface Order {
   deliveryId: number;
   delivery: Delivery;
   customerId: number;
-  customer: User;
+  //customer: User;
 }

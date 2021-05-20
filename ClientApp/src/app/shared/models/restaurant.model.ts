@@ -1,5 +1,5 @@
 import { Branch } from './branch.model';
-import { User } from './user.model';
+//import { User } from './user.model';
 
 export interface Restaurant {
   id: number;
@@ -7,5 +7,5 @@ export interface Restaurant {
   website: string;
   branches: Branch[];
   managerId: number;
-  manager: User;
+  //manager: User;
 }
