@@ -20,7 +20,7 @@
       [routerLinkActiveOptions]="{ exact: true }">
     <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
   </li>-->
-          <li class="active"><a href="index.html">Home</a></li>
+          <li class="active"><a href="#">Home</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#menu">Menu</a></li>
           <li><a href="#specials">Specials</a></li>
@@ -41,9 +41,7 @@
           <li *ngIf="!(isAuthenticated | async)">
             <a [routerLink]='["/authentication/login"]'>Login</a>
           </li>
-
         </ul>
-        <!--<app-login-menu></app-login-menu>-->
       </div>
     </div>
   </nav>

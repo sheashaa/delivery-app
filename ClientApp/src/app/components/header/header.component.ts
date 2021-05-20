@@ -1,14 +1,13 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AuthorizationService } from '../shared/authorization/authorization.service';
+import { AuthorizationService } from '../../shared/authorization/authorization.service';
 
 @Component({
-  selector: 'app-nav-menu',
-  templateUrl: './nav-menu.component.html',
-  styleUrls: ['./nav-menu.component.css']
+  selector: 'app-header',
+  templateUrl: './header.component.html'
 })
-export class NavMenuComponent {
+export class HeaderComponent {
   public isAuthenticated: Observable<boolean>;
   public userName: Observable<string>;
   public role: string;

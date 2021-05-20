@@ -1,2 +1,23 @@
-<h1>Hello, world!</h1>
-{{ user | json }}
+<app-hero></app-hero>
+<main id="main">
+  <section id="root" class="root">
+    <div class="container" data-aos="fade-up">
+      <h1>Hello, world!</h1>
+      {{ user | json }}
+      <br />
+      {{ baseUrl }}
+      <br />
+      <button (click)="testAlert()">Test alert</button>
+    </div>
+  </section>
+  <app-about></app-about>
+  <app-why-us></app-why-us>
+  <app-menu></app-menu>
+  <app-specials></app-specials>
+  <app-events></app-events>
+  <app-book-a-table></app-book-a-table>
+  <app-testimonials></app-testimonials>
+  <app-gallery></app-gallery>
+  <app-chefs></app-chefs>
+  <app-contact></app-contact>
+</main>

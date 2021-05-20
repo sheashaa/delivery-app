@@ -11,15 +11,17 @@
   });
 
   // Smooth scroll for the navigation menu and links with .scrollto classes
-  var scrolltoOffset = $('#header').outerHeight() - 1;
-  $(document).on('click', '.nav-menu a, .mobile-nav a, .scrollto', function(e) {
+  //var scrolltoOffset = $('#header').outerHeight() - 1;
+  $(document).on('click', '.nav-menu a, .mobile-nav a, .scrollto', function (e) {
+    var scrolltoOffset = $('#header').outerHeight() - 1;
     if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
       var target = $(this.hash);
       if (target.length) {
         e.preventDefault();
 
         var scrollto = target.offset().top - scrolltoOffset;
-
+        console.log(scrolltoOffset);
+        console.log(target.offset());
         if ($(this).attr("href") == '#header') {
           scrollto = 0;
         }
@@ -43,7 +45,8 @@
   });
 
   // Activate smooth scroll on page load with hash links in the url
-  $(document).ready(function() {
+  $(document).ready(function () {
+    var scrolltoOffset = $('#header').outerHeight() - 1;
     if (window.location.hash) {
       var initial_nav = window.location.hash;
       if ($(initial_nav).length) {
