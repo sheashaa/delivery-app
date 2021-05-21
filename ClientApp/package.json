@@ -9,7 +9,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "8.2.12",
+    "@angular/animations": "^8.2.12",
     "@angular/common": "8.2.12",
     "@angular/compiler": "8.2.12",
     "@angular/core": "8.2.12",
@@ -20,6 +20,7 @@
     "@angular/router": "8.2.12",
     "@nguniversal/module-map-ngfactory-loader": "8.1.1",
     "core-js": "^3.8.3",
+    "ngx-toastr": "^11.3.3",
     "node-sass": "^5.0.0",
     "oidc-client": "^1.11.3",
     "rxjs": "^6.6.3",

@@ -22,14 +22,14 @@ import { GalleryComponent } from './home/components/gallery/gallery.component';
 import { ChefsComponent } from './home/components/chefs/chefs.component';
 import { ContactComponent } from './home/components/contact/contact.component';
 import { HeroComponent } from './home/components/hero/hero.component';
-import { AlertComponent } from './components/alert/alert.component';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    AlertComponent,
     HeroComponent,
     AboutComponent,
     WhyUsComponent,
@@ -50,7 +50,12 @@ import { AlertComponent } from './components/alert/alert.component';
     AuthorizationModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-    ])
+    ]),
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-right',
+      maxOpened: 5
+    }),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizationInterceptor, multi: true }
