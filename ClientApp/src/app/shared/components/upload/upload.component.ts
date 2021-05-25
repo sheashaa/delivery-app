@@ -1,5 +1,5 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
-import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-upload',
@@ -7,22 +7,23 @@ import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 })
 export class UploadComponent implements OnInit {
   @Output() public onUploaded = new EventEmitter();
-  private image: string;
+  @Input() public image: string;
 
   constructor(private http: HttpClient) {
-
-    const defaultImages = [
-      "https://localhost:44392/assets/img/restaurants/1.jpg",
-      "https://localhost:44392/assets/img/restaurants/2.jpg",
-      "https://localhost:44392/assets/img/restaurants/3.jpg",
-      "https://localhost:44392/assets/img/restaurants/4.jpg",
-      "https://localhost:44392/assets/img/restaurants/5.jpg",
-      "https://localhost:44392/assets/img/restaurants/6.jpg",
-      "https://localhost:44392/assets/img/restaurants/7.jpg",
-      "https://localhost:44392/assets/img/restaurants/8.jpg",
-    ];
-    const randomImageIdx = Math.floor(Math.random() * defaultImages.length);
-    this.image = defaultImages[randomImageIdx];
+    if (!this.image) {
+      const defaultImages = [
+        "https://localhost:44392/assets/img/restaurants/1.jpg",
+        "https://localhost:44392/assets/img/restaurants/2.jpg",
+        "https://localhost:44392/assets/img/restaurants/3.jpg",
+        "https://localhost:44392/assets/img/restaurants/4.jpg",
+        "https://localhost:44392/assets/img/restaurants/5.jpg",
+        "https://localhost:44392/assets/img/restaurants/6.jpg",
+        "https://localhost:44392/assets/img/restaurants/7.jpg",
+        "https://localhost:44392/assets/img/restaurants/8.jpg",
+      ];
+      const randomImageIdx = Math.floor(Math.random() * defaultImages.length);
+      this.image = defaultImages[randomImageIdx];
+    } 
   }
   ngOnInit(): void {
     const response = {

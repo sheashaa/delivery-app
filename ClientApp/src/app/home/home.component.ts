@@ -2,7 +2,6 @@ import { HttpEventType } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { AuthorizationService } from '../shared/authorization/authorization.service';
-import { Restaurant } from '../shared/models/restaurant.model';
 import { RestaurantService } from '../shared/services/restaurant.service';
 
 @Component({

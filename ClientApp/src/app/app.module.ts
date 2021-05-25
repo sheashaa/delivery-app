@@ -16,6 +16,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { SharedModule } from './shared/shared.module';
+import { ModalDialogModule } from 'ngx-modal-dialog';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { SharedModule } from './shared/shared.module';
       positionClass: 'toast-bottom-right',
       maxOpened: 5
     }),
+    ModalDialogModule.forRoot(),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizationInterceptor, multi: true }

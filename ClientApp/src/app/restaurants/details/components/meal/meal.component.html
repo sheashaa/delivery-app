@@ -1,0 +1,55 @@
+<section id="menu" class="menu section-bg inner-page">
+  <div class="container" data-aos="fade-up">
+
+    <div class="section-title d-flex flex-column flex-sm-row justify-content-between align-items-center">
+      <div class="flex-row">
+        <h2>Meals</h2>
+        <p>Check {{ restaurantName }}'s Menu</p>
+      </div>
+      <div class="flex-row">
+        <button class="btn btn-warning btn-lg" (click)="addNewMeal()">Add Meal</button>
+      </div>
+    </div>
+
+    <div class="row" data-aos="fade-up" data-aos-delay="100">
+      <div class="col-lg-12 d-flex justify-content-center">
+        <ul id="menu-flters">
+          <li data-filter="*" class="filter-active">All</li>
+          <li *ngFor="let target of targets; index as i" [attr.data-filter]="target">{{ menu[i] }}</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row menu-container" data-aos="fade-up" data-aos-delay="200">
+
+
+      <div class="col-lg-6 menu-item filter-Salad">
+        <img class="menu-img" alt="">
+        <div class="menu-content">
+          <a (click)="viewMealDetails(1)" style="cursor: pointer;">blahblah salad</a><span>99LE</span>
+        </div>
+        <div class="menu-ingredients">xxxxx</div>
+      </div>
+
+      <div class="col-lg-6 menu-item filter-Sandwiches">
+        <img class="menu-img" alt="">
+        <div class="menu-content">
+          <a (click)="viewMealDetails(1)" style="cursor: pointer;">blahblah Sandwiches</a><span>1234LE</span>
+        </div>
+        <div class="menu-ingredients">xxxxx</div>
+      </div>
+
+      <div class="col-lg-6 menu-item filter-Pizza">
+        <img class="menu-img" alt="">
+        <div class="menu-content">
+          <a (click)="viewMealDetails(1)" style="cursor: pointer;">blahblah Pizza</a><span>10000LE</span>
+        </div>
+        <div class="menu-ingredients">xxxxx</div>
+      </div>
+    </div>
+  </div>
+
+
+  
+
+</section>
