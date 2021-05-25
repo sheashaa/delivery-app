@@ -1,7 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { Branch } from '../models/branch.model';
-
+import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -16,19 +14,19 @@ export class BranchService {
     return this.http.get(this.baseUrl, { observe: "response" });
   }
 
-  getBranch(id: number) {
+  getBranch(id) {
     return this.http.get(`${this.baseUrl}/${id}`);
   }
 
-  putBranch(id: number, branch: Branch) {
-    return this.http.post(`${this.baseUrl}/${id}`, branch);
+  putBranch(id, branch) {
+    return this.http.put(`${this.baseUrl}/${id}`, branch);
   }
 
-  postBranch(branch: Branch) {
+  postBranch(branch) {
     return this.http.post(this.baseUrl, branch);
   }
 
-  deleteBranch(id: number) {
+  deleteBranch(id) {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }
 }

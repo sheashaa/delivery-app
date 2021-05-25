@@ -32,14 +32,13 @@ namespace DeliveryApp.Services
             Claim emailClaim = new Claim(JwtClaimTypes.Email, user.Email);
             Claim firstNameClaim = new Claim(JwtClaimTypes.GivenName, user.FirstName);
             Claim lastNameClaim = new Claim(JwtClaimTypes.FamilyName, user.LastName);
-            Claim addressesClaim = new Claim("saved_addresses", JsonSerializer.Serialize(user.SavedAddresses));
+            Claim addressesClaim = new Claim("addresses", JsonSerializer.Serialize(user.Addresses));
             
             IList<Claim> roleClaims = new List<Claim>();
             foreach (string role in roles)
             {
                 roleClaims.Add(new Claim(JwtClaimTypes.Role, role));
             }
-
 
             context.IssuedClaims.Add(idClaim);
             context.IssuedClaims.Add(userNameClaim);

@@ -1,7 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { OrderItem } from '../models/orderitem.model';
-
 
 @Injectable({
   providedIn: 'root'
@@ -16,19 +14,19 @@ export class OrderItemService {
     return this.http.get(this.baseUrl, { observe: "response" });
   }
 
-  getOrderItem(id: number) {
+  getOrderItem(id) {
     return this.http.get(`${this.baseUrl}/${id}`);
   }
 
-  putOrderItem(id: number, orderItem: OrderItem) {
-    return this.http.post(`${this.baseUrl}/${id}`, orderItem);
+  putOrderItem(id, orderItem) {
+    return this.http.put(`${this.baseUrl}/${id}`, orderItem);
   }
 
-  postOrderItem(orderItem: OrderItem) {
+  postOrderItem(orderItem) {
     return this.http.post(this.baseUrl, orderItem);
   }
 
-  deleteOrderItem(id: number) {
+  deleteOrderItem(id) {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }
 }

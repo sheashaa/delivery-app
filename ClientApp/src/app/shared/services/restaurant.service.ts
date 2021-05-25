@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Restaurant } from '../models/restaurant.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,19 +14,19 @@ export class RestaurantService {
     return this.http.get(this.baseUrl, { observe: "response" });
   }
 
-  getRestaurant(id: Number) {
+  getRestaurant(id) {
     return this.http.get(`${this.baseUrl}/${id}`);
   }
 
-  putRestaurant(id: Number, restaurant: Restaurant) {
-    return this.http.post(`${this.baseUrl}/${id}`, restaurant);
+  putRestaurant(id, restaurant) {
+    return this.http.put(`${this.baseUrl}/${id}`, restaurant);
   }
 
-  postRestaurant(restaurant: Restaurant) {
+  postRestaurant(restaurant) {
     return this.http.post(this.baseUrl, restaurant);
   }
 
-  deleteRestaurant(id: Number) {
+  deleteRestaurant(id) {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }
 }

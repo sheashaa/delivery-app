@@ -7,14 +7,15 @@ import { RouterModule } from '@angular/router';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { AuthorizationModule } from './shared/authorization/authorization.module';
 import { AuthorizationInterceptor } from './shared/authorization/authorization.interceptor';
 import { HomeModule } from './home/home.module';
+import { RestaurantsModule } from './restaurants/restaurants.module';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,9 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    HomeModule,
+    RestaurantsModule,
+    SharedModule,
     RouterModule.forRoot([
       { path: '**', component: NotFoundComponent },
     ]),
@@ -35,8 +39,6 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
       positionClass: 'toast-bottom-right',
       maxOpened: 5
     }),
-    AuthorizationModule,
-    HomeModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizationInterceptor, multi: true }

@@ -15,10 +15,8 @@ namespace DeliveryApp.Models
         public int? AddressId { get; set; }
         public virtual Address Address { get; set; }
         public virtual ICollection<OrderItem> Items { get; set; }
-        public int? DeliveryId { get; set; }
-        public virtual Delivery Delivery { get; set; }
         public string CustomerId { get; set; }
         public virtual ApplicationUser Customer { get; set; }
-
+        public bool IsDelivered { get; set; }
     }
 }

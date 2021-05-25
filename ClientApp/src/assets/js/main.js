@@ -171,31 +171,34 @@
     });
   });
 
-  // Events carousel (uses the Owl Carousel library)
-  $(".events-carousel").owlCarousel({
-    autoplay: true,
-    dots: true,
-    loop: true,
-    items: 1
-  });
+  // Owl Carousel
+  $(document).ready(function () {
+    // Events carousel (uses the Owl Carousel library)
+    $(".events-carousel").owlCarousel({
+      autoplay: true,
+      dots: true,
+      loop: true,
+      items: 1
+    });
 
-  // Testimonials carousel (uses the Owl Carousel library)
-  $(".testimonials-carousel").owlCarousel({
-    autoplay: true,
-    dots: true,
-    loop: true,
-    autoplayTimeout: 6000,
-    responsive: {
-      0: {
-        items: 1
-      },
-      768: {
-        items: 2
-      },
-      900: {
-        items: 3
+    // Testimonials carousel (uses the Owl Carousel library)
+    $(".testimonials-carousel").owlCarousel({
+      autoplay: true,
+      dots: true,
+      loop: true,
+      autoplayTimeout: 6000,
+      responsive: {
+        0: {
+          items: 1
+        },
+        768: {
+          items: 2
+        },
+        900: {
+          items: 3
+        }
       }
-    }
+    });
   });
 
   // Initiate venobox lightbox
@@ -213,5 +216,4 @@
   $(window).on('load', function() {
     aos_init();
   });
-
 })(jQuery);

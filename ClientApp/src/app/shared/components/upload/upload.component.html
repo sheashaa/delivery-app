@@ -1,0 +1,7 @@
+<div class="image-upload-btn">
+  <img class="image" [src]="image" />
+  <div class="overlay" (click)="file.click()">
+    <div class="text">+</div>
+  </div>
+  <input type="file" #file (change)="upload(file.files)" class="file" />
+</div>

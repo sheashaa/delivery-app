@@ -4,29 +4,29 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class OrderService {
+export class MealService {
 
   constructor(private http: HttpClient) { }
 
-  baseUrl = 'https://localhost:44392/api/Orders';
+  baseUrl = 'https://localhost:44392/api/Products';
 
-  getOrders() {
+  getMeals() {
     return this.http.get(this.baseUrl, { observe: "response" });
   }
 
-  getOrder(id) {
+  getMeal(id) {
     return this.http.get(`${this.baseUrl}/${id}`);
   }
 
-  putOrder(id, order) {
-    return this.http.put(`${this.baseUrl}/${id}`, order);
+  putMeal(id, meal) {
+    return this.http.put(`${this.baseUrl}/${id}`, meal);
   }
 
-  postOrder(order) {
-    return this.http.post(this.baseUrl, order);
+  postMeal(meal) {
+    return this.http.post(this.baseUrl, meal);
   }
 
-  deleteOrder(id) {
+  deleteMeal(id) {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }
 }

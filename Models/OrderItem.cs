@@ -13,7 +13,7 @@ namespace DeliveryApp.Models
         public double Discount { get; set; }
         public int OrderId { get; set; }
         public virtual Order Order { get; set; }
-        public int ProductId { get; set; }
-        public virtual Product Product { get; set; }
+        public int MealId { get; set; }
+        public virtual Meal Meal { get; set; }
     }
 }

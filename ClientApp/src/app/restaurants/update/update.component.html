@@ -1,0 +1,39 @@
+<section id="book-a-table" class="book-a-table inner-page">
+  <div class="container" data-aos="fade-up">
+
+    <div class="section-title">
+      <h2>Restaurants</h2>
+      <p>Edit Restaurant Information</p>
+    </div>
+
+    <form (submit)="submit()" role="form" class="custom-form" data-aos="fade-up" data-aos-delay="100">
+      <div class="d-flex flex-column flex-lg-row">
+        <div class="col-lg-3 p-3">
+          <div class="form-row justify-content-center">
+            <app-upload (onUploaded)="uploaded($event)"></app-upload>
+          </div>
+        </div>
+        <div class="col-lg-9">
+          <div class="form-row">
+            <div class="col-12 form-group">
+              <input type="text" name="name" class="form-control" id="name" placeholder="Name" [(ngModel)]="name">
+              <div class="validate"></div>
+            </div>
+            <div class="col-lg-4 col-12 form-group">
+              <input type="url" name="facebook" class="form-control" id="facebook" placeholder="Facebook" [(ngModel)]="facebook">
+            </div>
+            <div class="col-lg-4 col-md-6 form-group">
+              <input type="url" name="twitter" class="form-control" id="twitter" placeholder="Twitter" [(ngModel)]="twitter">
+            </div>
+            <div class="col-lg-4 col-md-6 form-group">
+              <input type="url" name="instagram" class="form-control" id="instagram" placeholder="Instagram" [(ngModel)]="instagram">
+            </div>
+            <tag-input class="col-12 form-group" [(ngModel)]="_tags" [ngModelOptions]="{standalone: true}" [editable]="true" [identifyBy]="'id'" [displayBy]="'name'" [theme]="'dark'" placeholder="Tags" secondaryPlaceholder="Tags"></tag-input>
+            <tag-input class="col-12 form-group" [(ngModel)]="_menu" [ngModelOptions]="{standalone: true}" [editable]="true" [identifyBy]="'id'" [displayBy]="'name'" [theme]="'dark'" placeholder="Menu" secondaryPlaceholder="Menu"></tag-input>
+          </div>
+          <div class="text-center"><button type="submit">Save</button></div>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>

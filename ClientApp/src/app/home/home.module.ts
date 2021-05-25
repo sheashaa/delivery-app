@@ -34,7 +34,10 @@ import { RouterModule } from '@angular/router';
     ChefsComponent,
     ContactComponent,
     HomeComponent,
-  ],
-  exports: [HomeComponent]
+  ]
+  ,
+  exports: [
+    RouterModule
+  ]
 })
 export class HomeModule { }

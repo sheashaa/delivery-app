@@ -14,5 +14,7 @@ namespace DeliveryApp.Models
         public string Building { get; set; }
         public int? Floor { get; set; }
         public int? Apartment { get; set; }
+        public double? Latitude { get; set; }
+        public double? Longitude { get; set; }
     }
 }
