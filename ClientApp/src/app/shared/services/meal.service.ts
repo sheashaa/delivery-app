@@ -8,7 +8,7 @@ export class MealService {
 
   constructor(private http: HttpClient) { }
 
-  baseUrl = 'https://localhost:44392/api/Products';
+  baseUrl = 'https://localhost:44392/api/Meals';
 
   getMeals() {
     return this.http.get(this.baseUrl, { observe: "response" });

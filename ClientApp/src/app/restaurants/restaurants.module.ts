@@ -34,7 +34,7 @@ import { BranchUpdateDialogComponent } from './details/components/branch/dialogs
     TagInputModule,
     BrowserAnimationsModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   declarations: [
     RestaurantsListComponent,

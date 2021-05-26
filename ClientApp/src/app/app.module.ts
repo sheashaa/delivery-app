@@ -40,7 +40,7 @@ import { ModalDialogModule } from 'ngx-modal-dialog';
       positionClass: 'toast-bottom-right',
       maxOpened: 5
     }),
-    ModalDialogModule.forRoot(),
+    ModalDialogModule.forRoot()
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizationInterceptor, multi: true }

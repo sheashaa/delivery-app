@@ -23,33 +23,18 @@
     <div class="row menu-container" data-aos="fade-up" data-aos-delay="200">
 
 
-      <div class="col-lg-6 menu-item filter-Salad">
-        <img class="menu-img" alt="">
+      <div *ngFor="let meal of meals; index as i" class="col-lg-6 menu-item" [ngClass]="filterPerMeal[i]">
+        <img [src]="meal.image" class="menu-img" alt="">
         <div class="menu-content">
-          <a (click)="viewMealDetails(1)" style="cursor: pointer;">blahblah salad</a><span>99LE</span>
+          <a (click)="viewMealDetails(meal.id)" style="cursor: pointer;">{{ meal.name }}</a><span>{{ meal.price }}LE</span>
         </div>
-        <div class="menu-ingredients">xxxxx</div>
+        <div class="menu-ingredients">{{ meal.description }}</div>
       </div>
 
-      <div class="col-lg-6 menu-item filter-Sandwiches">
-        <img class="menu-img" alt="">
-        <div class="menu-content">
-          <a (click)="viewMealDetails(1)" style="cursor: pointer;">blahblah Sandwiches</a><span>1234LE</span>
-        </div>
-        <div class="menu-ingredients">xxxxx</div>
-      </div>
-
-      <div class="col-lg-6 menu-item filter-Pizza">
-        <img class="menu-img" alt="">
-        <div class="menu-content">
-          <a (click)="viewMealDetails(1)" style="cursor: pointer;">blahblah Pizza</a><span>10000LE</span>
-        </div>
-        <div class="menu-ingredients">xxxxx</div>
-      </div>
     </div>
   </div>
 
 
-  
+
 
 </section>

@@ -3,6 +3,9 @@ import { ModalDialogService } from 'ngx-modal-dialog';
 import { MealService } from '../../../../shared/services/meal.service';
 import { RestaurantService } from '../../../../shared/services/restaurant.service';
 import { MealCreateDialogComponent } from './dialogs/create/create.component';
+import { MealDeleteDialogComponent } from './dialogs/delete/delete.component';
+import { MealDetailsDialogComponent } from './dialogs/details/details.component';
+import { MealUpdateDialogComponent } from './dialogs/update/update.component';
 
 @Component({
   selector: 'app-meal',
@@ -41,14 +44,13 @@ export class MealComponent implements OnInit {
 
   addNewMeal() {
     this.modalDialogService.openDialog(this.viewContainer, {
-      title: 'Custom child component',
+      title: 'Add New Meal',
       childComponent: MealCreateDialogComponent,
       settings: {
-        closeButtonClass: 'close theme-icon-close',
-        buttonClass: 'btn btn-warning'
+        buttonClass: 'btn btn-warning',
       },
       data: {
-        restaurantId: Math.random()
+        restaurantId: this.restaurantId
       }
     });
 
@@ -56,14 +58,13 @@ export class MealComponent implements OnInit {
 
   viewMealDetails(id) {
     this.modalDialogService.openDialog(this.viewContainer, {
-      title: 'Custom child component',
-      childComponent: MealCreateDialogComponent,
+      title: 'Meal Information',
+      childComponent: MealUpdateDialogComponent,      
       settings: {
-        closeButtonClass: 'close theme-icon-close',
-        buttonClass: 'btn btn-warning'
+        buttonClass: 'btn btn-warning',
       },
       data: {
-        restaurantId: id
+        mealId: id
       }
     });
   }
