@@ -13,6 +13,7 @@ import { ChefsComponent } from './components/chefs/chefs.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { HomeComponent } from './home.component';
 import { RouterModule } from '@angular/router';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { RouterModule } from '@angular/router';
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
     ]),
+    SharedModule
   ],
   declarations: [
     HeroComponent,
