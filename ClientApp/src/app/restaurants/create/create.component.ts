@@ -7,6 +7,7 @@ import { RestaurantService } from '../../shared/services/restaurant.service';
 @Component({
   selector: 'app-restaurants-create',
   templateUrl: './create.component.html',
+  styleUrls: ['./create.component.css']
 })
 export class RestaurantsCreateComponent {
   private name: string;

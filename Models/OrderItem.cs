@@ -8,12 +8,13 @@ namespace DeliveryApp.Models
     public class OrderItem
     {
         public int Id { get; set; }
+        public string Name { get; set; }
         public int Quantity { get; set; }
         public double Price { get; set; }
-        public double Discount { get; set; }
+        public double? Discount { get; set; }
         public int OrderId { get; set; }
         public virtual Order Order { get; set; }
-        public int MealId { get; set; }
+        public int? MealId { get; set; }
         public virtual Meal Meal { get; set; }
     }
 }

@@ -1,0 +1,33 @@
+<section id="why-us" class="why-us section-bg inner-page">
+  <div class="container" data-aos="fade-up">
+
+    <div class="section-title">
+      <h2>Cart</h2>
+      <p>Check your order</p>
+    </div>
+
+    <div class="flex-row" data-aos="fade-up" data-aos-delay="100">
+
+      <div *ngFor="let item of _cart; index as i" class="col-12">
+        <div class="box">
+          <div class="d-flex flex-row">
+            <img [src]="item.image" class="circular-image" />
+            <div>
+              <span>{{ i + 1 }}</span>
+              <h4>{{ item.name }}</h4>
+              <p>{{ item.price }}</p>
+              <p>{{ item.quantity }}</p>
+            </div>
+          </div>
+          <button class="btn btn-warning btn-lg" (click)="increment(item.mealId)">+1</button>
+          <button class="btn btn-warning btn-lg" (click)="decrement(item.mealId)">-1</button>
+          <button class="btn btn-warning btn-lg" (click)="removeItem(item.mealId)">Remove</button>
+        </div>
+      </div>
+
+
+    </div>
+    <button class="btn btn-warning btn-lg" (click)="checkOut()">Check Out</button>
+
+  </div>
+</section>

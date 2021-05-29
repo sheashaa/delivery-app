@@ -20,6 +20,7 @@ import { BranchCreateDialogComponent } from './details/components/branch/dialogs
 import { BranchDeleteDialogComponent } from './details/components/branch/dialogs/delete/delete.component';
 import { BranchDetailsDialogComponent } from './details/components/branch/dialogs/details/details.component';
 import { BranchUpdateDialogComponent } from './details/components/branch/dialogs/update/update.component';
+import { RestaurantDeleteDialogComponent } from './details/components/delete/delete.component';
 
 @NgModule({
   imports: [
@@ -50,7 +51,8 @@ import { BranchUpdateDialogComponent } from './details/components/branch/dialogs
     BranchCreateDialogComponent,
     BranchDeleteDialogComponent,
     BranchDetailsDialogComponent,
-    BranchUpdateDialogComponent
+    BranchUpdateDialogComponent,
+    RestaurantDeleteDialogComponent
   ],
   entryComponents: [
     MealCreateDialogComponent,
@@ -60,7 +62,8 @@ import { BranchUpdateDialogComponent } from './details/components/branch/dialogs
     BranchCreateDialogComponent,
     BranchDeleteDialogComponent,
     BranchDetailsDialogComponent,
-    BranchUpdateDialogComponent
+    BranchUpdateDialogComponent,
+    RestaurantDeleteDialogComponent
   ],
   exports: [
     RouterModule

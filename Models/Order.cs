@@ -7,6 +7,15 @@ using System.Threading.Tasks;
 
 namespace DeliveryApp.Models
 {
+    public enum OrderStatus
+    {
+        Queued,
+        Preparing,
+        Delivering,
+        Delivered,
+        Cancelled
+    }
+
     public class Order
     {
         public int Id { get; set; }
@@ -17,6 +26,6 @@ namespace DeliveryApp.Models
         public virtual ICollection<OrderItem> Items { get; set; }
         public string CustomerId { get; set; }
         public virtual ApplicationUser Customer { get; set; }
-        public bool IsDelivered { get; set; }
+        public OrderStatus Status { get; set; }
     }
 }

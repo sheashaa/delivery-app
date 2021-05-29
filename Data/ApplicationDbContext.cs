@@ -54,9 +54,10 @@ namespace DeliveryApp.Data
                 Id = CUSTOMER_ROLE_ID,
             });
 
-            builder.Entity<OrderItem>().HasOne(m => m.Meal).WithOne().OnDelete(DeleteBehavior.NoAction);
+            builder.Entity<OrderItem>().HasOne(m => m.Meal).WithOne().OnDelete(DeleteBehavior.SetNull);
+            builder.Entity<OrderItem>().HasIndex(m => m.MealId).IsUnique(false);
             builder.Entity<Order>().Property(s => s.DateTime).HasDefaultValueSql("GETDATE()");
-            builder.Entity<Order>().Property(o => o.IsDelivered).HasDefaultValue(false);
+            builder.Entity<Order>().Property(o => o.Status).HasDefaultValue(OrderStatus.Queued);
             builder.Entity<Restaurant>().Property(r => r.Tags)
                 .HasConversion(v => string.Join(',', v), v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));
             builder.Entity<Restaurant>().Property(r => r.Menu)
@@ -69,5 +70,6 @@ namespace DeliveryApp.Data
         public virtual DbSet<OrderItem> OrderItems { get; set; }
         public virtual DbSet<Meal> Meals { get; set; }
         public virtual DbSet<Restaurant> Restaurants { get; set; }
+        public virtual DbSet<Delivery> Deliveries { get; set; }
     }
 }

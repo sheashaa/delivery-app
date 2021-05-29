@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { IModalDialog, IModalDialogButton, IModalDialogOptions } from 'ngx-modal-dialog';
 import { ToastrService } from 'ngx-toastr';
 import { AuthorizationService } from '../../../../../../shared/authorization/authorization.service';
+import { CartService } from '../../../../../../shared/services/cart.service';
 import { MealService } from '../../../../../../shared/services/meal.service';
 import { RestaurantService } from '../../../../../../shared/services/restaurant.service';
 
@@ -17,74 +18,41 @@ export class MealDetailsDialogComponent implements IModalDialog {
   private description: string;
   private price: number;
   private image: string;
-  private menuTag: string;
-  private restaurantId: number;
-  private managerId: string;
-  private currentUserId: string;
-  private menu;
+  private mealId: number;
 
-  constructor(private toastr: ToastrService, private authorize: AuthorizationService, private restaurantService: RestaurantService, private mealService: MealService, private router: Router) {
+  constructor(private toastr: ToastrService, private mealService: MealService, private cartService: CartService) {
     this.actionButtons = [
       {
-        text: 'Add', onAction: () => {
-          if (!this.name || !this.name.length) {
-            this.toastr.error('Please enter meal name', 'error');
-            return;
+        text: 'Add To Cart', onAction: () => {
+          if (this.mealId) {
+            const item = {
+              mealId: this.mealId,
+              name: this.name,
+              quantity: 1,
+              price: this.price,
+              image: this.image
+            };
+            console.log(item);
+            this.cartService.push(item);
+            this.toastr.success('Meal was added to cart');
+            return true;
           }
-          if (!this.description || !this.description.length) {
-            this.toastr.error('Please enter meal description', 'error');
-            return;
-          }
-          if (!this.price || Number.isNaN(this.price)) {
-            this.toastr.error('Please enter meal price', 'error');
-            return;
-          }
-          if (!this.menuTag || !this.menuTag.length) {
-            this.toastr.error('Please select meal menu tag', 'error');
-            return;
-          }
-          if (!this.currentUserId) {
-            this.toastr.error('Please log in to continue', 'error');
-            return;
-          }
-          if (!this.managerId || this.currentUserId !== this.managerId) {
-            this.toastr.error('You do not have permisssion to add this meal', 'error');
-            return;
-          }
-          const meal = {
-            name: this.name,
-            description: this.description,
-            price: this.price,
-            image: this.image,
-            menuTag: this.menuTag,
-            restaurantId: this.restaurantId
-          };
-
-          console.log(meal);
-
-          this.mealService.postMeal(meal).subscribe(data => {
-            console.log(data);
-            this.toastr.success('Meal was added successfully', 'success');
-            this.router.navigate(['./restaurants/details/', this.restaurantId]);
-          });
-          return true;
         }
       },
       { text: 'Close', onAction: () => true },
     ];
-    this.authorize.getUser().subscribe(u => this.currentUserId = u && u.id);
   }
 
   dialogInit(reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions<any>>) {
-    this.restaurantId = options.data.restaurantId;
-    this.restaurantService.getRestaurant(this.restaurantId).subscribe(data => {
-      this.managerId = data['managerId'];
-      this.menu = data['menu'];
+    this.mealId = options.data.mealId;
+    this.mealService.getMeal(this.mealId).subscribe(meal => {
+      this.name = meal['name'];
+      this.description = meal['description'];
+      this.price = parseFloat(meal['price']);
+      this.image = meal['image'];
     });
   }
 
-  uploaded(event) {
-    this.image = event.imagePath;
-  }
+
 
 }

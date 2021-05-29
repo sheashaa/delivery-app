@@ -59,7 +59,7 @@ export class MealComponent implements OnInit {
   viewMealDetails(id) {
     this.modalDialogService.openDialog(this.viewContainer, {
       title: 'Meal Information',
-      childComponent: MealUpdateDialogComponent,      
+      childComponent: MealDetailsDialogComponent,      
       settings: {
         buttonClass: 'btn btn-warning',
       },

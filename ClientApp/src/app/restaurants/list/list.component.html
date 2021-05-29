@@ -1,23 +1,21 @@
-<section id="chefs" class="chefs inner-page">
-  <div class="container" data-aos="fade-up">
+<section class="restaurants inner-page">
+  <div class="container">
 
     <div class="section-title">
-      <h2>Restaurants</h2>
-      <p>Our Partnered Restaurants</p>
+      <h2><span>Restaurants</span></h2>
     </div>
 
-    <div class="row justify-content-center">
-      <div class="col-lg-3 col-md-4 col-sm-6 col-12" *ngFor="let restaurant of restaurants">
-        <div (click)="update(restaurant.id)" class="member" style="cursor: pointer" data-aos="zoom-in" data-aos-delay="100">
-          <img [src]="restaurant.image" class="img-fluid" style="width:100%;height:100%;" alt="">
-          <div class="member-info">
-            <div class="member-info-content">
-              <h4>{{restaurant.name}}</h4>
-              <span>{{restaurant.tags|json}}</span>
-            </div>
+    <div class="row">
+      <p *ngIf="!(restuarants && restaurants.length)">There are no restaurants :(</p>
+      <div *ngFor="let restaurant of restaurants" class="col-lg-4 col-md-6">
+        <div (click)="update(restaurant.id)" class="restaurant">
+          <div class="image"><img [src]="restaurant.image" class="img-fluid" alt=""></div>
+          <div class="restaurant-info">
+            <h4>{{ restaurant.name }}</h4>
+            <span>{{ restaurant.tags | json }}</span>
             <div class="social">
-              <a *ngIf="restaurant.facebookLink" [href]="restaurant.facebookLink"><i class="icofont-twitter"></i></a>
-              <a *ngIf="restaurant.twitterLink" [href]="restaurant.twitterLink"><i class="icofont-facebook"></i></a>
+              <a *ngIf="restaurant.twitterLink" [href]="restaurant.twitterLink"><i class="icofont-twitter"></i></a>
+              <a *ngIf="restaurant.facebookLink" [href]="restaurant.facebookLink"><i class="icofont-facebook"></i></a>
               <a *ngIf="restaurant.instagramLink" [href]="restaurant.instagramLink"><i class="icofont-instagram"></i></a>
             </div>
           </div>

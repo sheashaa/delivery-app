@@ -163,6 +163,31 @@ namespace DeliveryApp.Data.Migrations
                     b.ToTable("Branches");
                 });
 
+            modelBuilder.Entity("DeliveryApp.Models.Delivery", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CourierId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourierId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("Deliveries");
+                });
+
             modelBuilder.Entity("DeliveryApp.Models.Meal", b =>
                 {
                     b.Property<int>("Id")
@@ -213,10 +238,10 @@ namespace DeliveryApp.Data.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<bool>("IsDelivered")
+                    b.Property<int>("Status")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.HasKey("Id");
 
@@ -234,11 +259,14 @@ namespace DeliveryApp.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("Discount")
+                    b.Property<double?>("Discount")
                         .HasColumnType("float");
 
-                    b.Property<int>("MealId")
+                    b.Property<int?>("MealId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
@@ -251,8 +279,7 @@ namespace DeliveryApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MealId")
-                        .IsUnique();
+                    b.HasIndex("MealId");
 
                     b.HasIndex("OrderId");
 
@@ -430,21 +457,21 @@ namespace DeliveryApp.Data.Migrations
                         new
                         {
                             Id = "0A3A9831-8DBA-4F86-996A-FD3A40CC0030",
-                            ConcurrencyStamp = "c144b828-42d9-4150-b397-dcccd127d54e",
+                            ConcurrencyStamp = "8bbf52aa-4802-4fd2-8582-76522a408e03",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
                             Id = "3E0A855D-6FCB-4C23-850E-C13B567621A5",
-                            ConcurrencyStamp = "4909870e-7d86-4da5-8ae2-d93668beb7fc",
+                            ConcurrencyStamp = "31625409-a078-4a84-a9c5-4b1f87a5435c",
                             Name = "Courier",
                             NormalizedName = "COURIER"
                         },
                         new
                         {
                             Id = "4973D731-E8B6-4982-8D96-0E4A0368E581",
-                            ConcurrencyStamp = "dec8e2be-7241-4f5f-bb8f-0741003ecc75",
+                            ConcurrencyStamp = "212162ce-4e0f-4a50-8207-f45952d80ce8",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -576,6 +603,23 @@ namespace DeliveryApp.Data.Migrations
                     b.Navigation("Restaurant");
                 });
 
+            modelBuilder.Entity("DeliveryApp.Models.Delivery", b =>
+                {
+                    b.HasOne("DeliveryApp.Models.ApplicationUser", "Courier")
+                        .WithMany()
+                        .HasForeignKey("CourierId");
+
+                    b.HasOne("DeliveryApp.Models.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Courier");
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("DeliveryApp.Models.Meal", b =>
                 {
                     b.HasOne("DeliveryApp.Models.Restaurant", "Restaurant")
@@ -607,8 +651,7 @@ namespace DeliveryApp.Data.Migrations
                     b.HasOne("DeliveryApp.Models.Meal", "Meal")
                         .WithOne()
                         .HasForeignKey("DeliveryApp.Models.OrderItem", "MealId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("DeliveryApp.Models.Order", "Order")
                         .WithMany("Items")

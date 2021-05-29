@@ -3,6 +3,7 @@ import { AuthorizationService, AuthenticationResultStatus } from '../authorizati
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { LoginActions, QueryParameterNames, ApplicationPaths, ReturnUrlType } from '../authorization.constants';
+import { ToastrService } from 'ngx-toastr';
 
 // The main responsibility of this component is to handle the user's login process.
 // This is the starting point for the login process. Any component that needs to authenticate
@@ -10,10 +11,11 @@ import { LoginActions, QueryParameterNames, ApplicationPaths, ReturnUrlType } fr
 // let the component perform the login and return back to the return url.
 @Component({
   selector: 'app-login',
-  template: '<p>{{ message | async }}</p>',
+  template: ''
+  //template: '<p>{{ message | async }}</p>',
 })
 export class LoginComponent implements OnInit {
-  public message = new BehaviorSubject<string>(null);
+  //public message = new BehaviorSubject<string>(null);
 
   constructor(
     private authorizeService: AuthorizationService,
@@ -24,14 +26,16 @@ export class LoginComponent implements OnInit {
     const action = this.activatedRoute.snapshot.url[1];
     switch (action.path) {
       case LoginActions.Login:
-        await this.login(this.getReturnUrl());
+        //await this.login(this.getReturnUrl());
+        await this.login(undefined);
         break;
       case LoginActions.LoginCallback:
         await this.processLoginCallback();
         break;
       case LoginActions.LoginFailed:
         const message = this.activatedRoute.snapshot.queryParamMap.get(QueryParameterNames.Message);
-        this.message.next(message);
+        //this.message.next(message);
+        console.error(message);
         break;
       case LoginActions.Profile:
         this.redirectToProfile();
@@ -47,14 +51,16 @@ export class LoginComponent implements OnInit {
 
 
   private async login(returnUrl: string): Promise<void> {
-    const state: INavigationState = { returnUrl };
-    const result = await this.authorizeService.signIn(state);
-    this.message.next(undefined);
+    //const state: INavigationState = { returnUrl };
+    const result = await this.authorizeService.signIn(undefined);
+    //const result = await this.authorizeService.signIn(state);
+    //this.message.next(undefined);
     switch (result.status) {
       case AuthenticationResultStatus.Redirect:
         break;
       case AuthenticationResultStatus.Success:
-        await this.navigateToReturnUrl(returnUrl);
+        //await this.navigateToReturnUrl(returnUrl);
+        this.router.navigate(['./']);
         break;
       case AuthenticationResultStatus.Fail:
         await this.router.navigate(ApplicationPaths.LoginFailedPathComponents, {
@@ -67,17 +73,20 @@ export class LoginComponent implements OnInit {
   }
 
   private async processLoginCallback(): Promise<void> {
-    const url = window.location.href;
-    const result = await this.authorizeService.completeSignIn(url);
+    //const url = window.location.href;
+    const result = await this.authorizeService.completeSignIn(undefined);
+    //const result = await this.authorizeService.completeSignIn(url);
     switch (result.status) {
       case AuthenticationResultStatus.Redirect:
         // There should not be any redirects as completeSignIn never redirects.
         throw new Error('Should not redirect.');
       case AuthenticationResultStatus.Success:
-        await this.navigateToReturnUrl(this.getReturnUrl(result.state));
+        //await this.navigateToReturnUrl(this.getReturnUrl(result.state));
+        this.router.navigate(['./']);
         break;
       case AuthenticationResultStatus.Fail:
-        this.message.next(result.message);
+        //this.message.next(result.message);
+        console.error(result.message);
         break;
     }
   }
@@ -92,28 +101,28 @@ export class LoginComponent implements OnInit {
     this.redirectToApiAuthorizationPath(ApplicationPaths.IdentityManagePath);
   }
 
-  private async navigateToReturnUrl(returnUrl: string) {
-    // It's important that we do a replace here so that we remove the callback uri with the
-    // fragment containing the tokens from the browser history.
-    await this.router.navigateByUrl(returnUrl, {
-      replaceUrl: true
-    });
-  }
+  //private async navigateToReturnUrl(returnUrl: string) {
+  //  // It's important that we do a replace here so that we remove the callback uri with the
+  //  // fragment containing the tokens from the browser history.
+  //  await this.router.navigateByUrl(returnUrl, {
+  //    replaceUrl: true
+  //  });
+  //}
 
-  private getReturnUrl(state?: INavigationState): string {
-    const fromQuery = (this.activatedRoute.snapshot.queryParams as INavigationState).returnUrl;
-    // If the url is coming from the query string, check that is either
-    // a relative url or an absolute url
-    if (fromQuery &&
-      !(fromQuery.startsWith(`${window.location.origin}/`) ||
-        /\/[^\/].*/.test(fromQuery))) {
-      // This is an extra check to prevent open redirects.
-      throw new Error('Invalid return url. The return url needs to have the same origin as the current page.');
-    }
-    return (state && state.returnUrl) ||
-      fromQuery ||
-      ApplicationPaths.DefaultLoginRedirectPath;
-  }
+  //private getReturnUrl(state?: INavigationState): string {
+  //  const fromQuery = (this.activatedRoute.snapshot.queryParams as INavigationState).returnUrl;
+  //  // If the url is coming from the query string, check that is either
+  //  // a relative url or an absolute url
+  //  if (fromQuery &&
+  //    !(fromQuery.startsWith(`${window.location.origin}/`) ||
+  //      /\/[^\/].*/.test(fromQuery))) {
+  //    // This is an extra check to prevent open redirects.
+  //    throw new Error('Invalid return url. The return url needs to have the same origin as the current page.');
+  //  }
+  //  return (state && state.returnUrl) ||
+  //    fromQuery ||
+  //    ApplicationPaths.DefaultLoginRedirectPath;
+  //}
 
   private redirectToApiAuthorizationPath(apiAuthorizationPath: string) {
     // It's important that we do a replace here so that when the user hits the back arrow on the
@@ -124,6 +133,6 @@ export class LoginComponent implements OnInit {
   }
 }
 
-interface INavigationState {
-  [ReturnUrlType]: string;
-}
+//interface INavigationState {
+//  [ReturnUrlType]: string;
+//}

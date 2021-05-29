@@ -1,0 +1,24 @@
+<section id="why-us" class="why-us section-bg inner-page">
+  <div class="container" data-aos="fade-up">
+
+    <div class="section-title">
+      <h2>Orders</h2>
+      <p>Order History</p>
+    </div>
+
+    <div class="flex-row" data-aos="fade-up" data-aos-delay="100">
+
+      <div *ngFor="let order of orders; index as i" class="col-12" style="cursor: pointer" (click)="viewOrderDetails(order.id)">
+        <div class="box">
+          <span>{{ i + 1 }}</span>
+          <h4>{{ parseDateTime(order.dateTime) }}</h4>
+          <p>{{ getStatus(order.status) }}</p>
+          <button *ngIf="isQueued(order.status)" class="btn btn-warning btn-lg" (click)="cancel(order.id)">Cancel</button>
+        </div>
+      </div>
+
+
+    </div>
+
+  </div>
+</section>

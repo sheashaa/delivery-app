@@ -1,48 +1,26 @@
-<header id="header" class="fixed-top">
-  <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark">
-    <div class="container">
-      <h1 class="logo mr-auto"><a href="index.html">Restaurantly</a></h1>
-      <!--<a href="index.html" class="logo mr-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
-      <button class="navbar-toggler"
-              type="button"
-              data-toggle="collapse"
-              data-target=".navbar-collapse"
-              aria-label="Toggle navigation"
-              [attr.aria-expanded]="isExpanded"
-              (click)="toggle()">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="nav-menu navbar-collapse collapse d-sm-inline-flex justify-content-end"
-           [ngClass]="{ show: isExpanded }">
-        <ul class="navbar-nav flex-grow">
-          <!--<li class="nav-item"
-      [routerLinkActive]="['link-active']"
-      [routerLinkActiveOptions]="{ exact: true }">
-    <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
-  </li>-->
-          <li class="active"><a href="#">Home</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#menu">Menu</a></li>
-          <li><a href="#specials">Specials</a></li>
-          <li><a href="#events">Events</a></li>
-          <li><a href="#gallery">Gallery</a></li>
-          <li><a href="#chefs">Chefs</a></li>
-          <li><a href="#contact">Contact</a></li>
-          <li class="book-a-table text-center"><a href="#book-a-table">Book a table</a></li>
-          <li *ngIf="isAuthenticated | async">
-            <a [routerLink]='["/authentication/profile"]' title="Manage">Hello {{ userName | async }}</a>
-          </li>
-          <li *ngIf="isAuthenticated | async">
-            <a [routerLink]='["/authentication/logout"]' [state]='{ local: true }' title="Logout">Logout</a>
-          </li>
-          <li *ngIf="!(isAuthenticated | async)">
-            <a [routerLink]='["/authentication/register"]' [queryParams]='{role: role}' queryParamsHandling='merge'>Register</a>
-          </li>
-          <li *ngIf="!(isAuthenticated | async)">
-            <a [routerLink]='["/authentication/login"]'>Login</a>
-          </li>
-        </ul>
-      </div>
+<section id="topbar" class="d-none d-lg-flex align-items-center fixed-top" [ngClass]="isHome('topbar')">
+  <div class="container text-right">
+    <a *ngIf="isAuthenticated" [routerLink]='["/authentication/profile"]' title="Manage" class="mr-2">Hello {{ userName }}</a>
+    <a *ngIf="isAuthenticated" [routerLink]='["/authentication/logout"]' [state]='{ local: true }' title="Logout" class="mr-2">Logout</a>
+    <a *ngIf="!(isAuthenticated)" [routerLink]='["/authentication/register"]' [queryParams]="{ role: 'Customer' }" queryParamsHandling='merge' class="mr-2">Register</a>
+    <a *ngIf="!(isAuthenticated)" [routerLink]='["/authentication/login"]' class="mr-2">Login</a>
+  </div>
+</section>
+
+<header id="header" class="fixed-top d-flex align-items-center" [ngClass]="isHome('header')">
+  <div class="container d-flex align-items-center">
+
+    <div class="logo mr-auto">
+      <h1 class="text-light"><a [routerLink]='["./"]'><span>DeliveryApp</span></a></h1>
     </div>
-  </nav>
+
+    <nav class="nav-menu d-none d-lg-block">
+      <ul>
+        <li class="active"><a [routerLink]='["./"]'>Home</a></li>
+
+        <li class="cart text-center"><a [routerLink]='["./orders/cart"]'>Cart <i class="icofont-opencart"></i></a></li>
+      </ul>
+    </nav>
+
+  </div>
 </header>

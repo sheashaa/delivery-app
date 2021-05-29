@@ -1,18 +1,60 @@
-<section id="hero" class="d-flex align-items-center">
-  <div class="container position-relative text-center text-lg-left" data-aos="zoom-in" data-aos-delay="100">
-    <div class="row">
-      <div class="col-lg-8">
-        <h1>Welcome to <span>Restaurantly</span></h1>
-        <h2>Delivering great food for more than 18 years!</h2>
+<section id="hero">
+  <div class="hero-container">
+    <div id="heroCarousel" class="carousel slide carousel-fade" data-ride="carousel">
 
-        <div class="btns">
-          <a href="#menu" class="btn-menu animated fadeInUp scrollto">Our Menu</a>
-          <a href="#book-a-table" class="btn-book animated fadeInUp scrollto">Book a Table</a>
+      <ol class="carousel-indicators" id="hero-carousel-indicators"></ol>
+
+      <div class="carousel-inner" role="listbox">
+
+        <div class="carousel-item active" style="background: url(assets/img/slide/slide-1.jpg);">
+          <div class="carousel-container">
+            <div class="carousel-content">
+              <h2 class="animate__animated animate__fadeInDown"><span>DeliveryApp</span></h2>
+              <p class="animate__animated animate__fadeInUp">Explore our partnered restaurants and get yourself filled.</p>
+              <div>
+                <a [routerLink]='["/restaurants"]' class="btn-hero animate__animated animate__fadeInUp scrollto">Our Restaurants</a>
+                <a *ngIf="!isAuthenticated" [routerLink]='["/authentication/register"]' [queryParams]="{ role: 'Customer' }" queryParamsHandling='merge' class="btn-hero animate__animated animate__fadeInUp scrollto">Register</a>
+              </div>
+            </div>
+          </div>
         </div>
+
+        <div class="carousel-item" style="background: url(assets/img/slide/slide-2.jpg);">
+          <div class="carousel-container">
+            <div class="carousel-content">
+              <h2 class="animate__animated animate__fadeInDown">Have a restaurant?</h2>
+              <p class="animate__animated animate__fadeInUp">Sign up and register your restaurant to reach new customers.</p>
+              <div>
+                <a *ngIf="!isAuthenticated" [routerLink]='["/authentication/register"]' [queryParams]="{ role: 'Manager' }" queryParamsHandling='merge' class="btn-hero animate__animated animate__fadeInUp scrollto">Register</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="carousel-item" style="background: url(assets/img/slide/slide-3.jpg);">
+          <div class="carousel-background"><img src="assets/img/slide/slide-3.jpg" alt=""></div>
+          <div class="carousel-container">
+            <div class="carousel-content">
+              <h2 class="animate__animated animate__fadeInDown">Want to earn money?</h2>
+              <p class="animate__animated animate__fadeInUp">With us, you can earn money by delivering food from restaurants to customers. Sign up to start earning money.</p>
+              <div>
+                <a *ngIf="!isAuthenticated" [routerLink]='["/authentication/register"]' [queryParams]="{ role: 'Courier' }" queryParamsHandling='merge' class="btn-hero animate__animated animate__fadeInUp scrollto">Register</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
-      <div class="col-lg-4 d-flex align-items-center justify-content-center" data-aos="zoom-in" data-aos-delay="200">
-        <a href="https://www.youtube.com/watch?v=GlrxcuEDyF8" class="venobox play-btn" data-vbtype="video" data-autoplay="true"></a>
-      </div>
+
+      <a class="carousel-control-prev" href="#heroCarousel" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon icofont-simple-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+
+      <a class="carousel-control-next" href="#heroCarousel" role="button" data-slide="next">
+        <span class="carousel-control-next-icon icofont-simple-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
 
     </div>
   </div>

@@ -1,0 +1,53 @@
+<section id="why-us" class="why-us section-bg inner-page">
+  <div class="container" data-aos="fade-up">
+
+    <div class="section-title">
+      <h2>Delivery</h2>
+      <p>Orders</p>
+    </div>
+
+    <div class="flex-row" data-aos="fade-up" data-aos-delay="100">
+      <div class="btn-group btn-group-toggle bg-warning p-2 w-100" role="group" aria-label="Basic example" data-toggle="buttons">
+        <label class="btn btn-outline-primary active mr-2">
+          <input [checked]="showQueued" (change)="showQueued = !showQueued; getOrders()" type="checkbox" checked> Queued
+        </label>
+        <label class="btn btn-outline-danger active mr-2">
+          <input [checked]="showBeingDelivered" (change)="showBeingDelivered = !showBeingDelivered; getOrders()" type="checkbox"> Being Delivered
+        </label>
+        <label class="btn btn-outline-secondary active mr-2">
+          <input [checked]="showDelivered" (change)="showDelivered = !showDelivered; getOrders()" type="checkbox"> Delivered
+        </label>
+        <label class="btn btn-outline-dark active mr-2">
+          <input [checked]="showCancelled" (change)="showCancelled = !showCancelled; getOrders()" type="checkbox"> Cancelled
+        </label>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-borderless">
+          <thead class="bg-warning">
+            <tr>
+              <th scope="col">Id</th>
+              <th scope="col">Date</th>
+              <th scope="col">Address</th>
+              <th scope="col">Phone</th>
+              <th scope="col">Status</th>
+              <th scope="col">Options</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of orders; index as i" [ngClass]="getStatusClass(order.status)">
+              <th scope="row">{{ order.id }}</th>
+              <td>{{ getDateTime(order.dateTime) }}</td>
+              <td>{{ order.address }}</td>
+              <td>{{ order.customer.phone }}</td>
+              <td>{{ getOrderStatus(order.status) }}</td>
+              <td>
+                <button *ngIf="isQueued(order.status) && isCourierFree" class="btn btn-warning" (click)="deliver(order)">Deliver</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</section>

@@ -1,0 +1,9 @@
+<div class="flex-row justify-content-between">
+  <img class="circular-image" [src]="image"/>
+  <div>
+    <p>Name: {{ name }}</p>
+    <p>Description: {{ description }}</p>
+    <p>Price: {{ price }}</p>
+  </div>
+</div>
+<button class="btn btn-warning" (click)="addToCart()">Add To Cart</button>
