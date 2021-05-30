@@ -6,8 +6,7 @@ import { RestaurantService } from '../../shared/services/restaurant.service';
 
 @Component({
   selector: 'app-restaurants-create',
-  templateUrl: './create.component.html',
-  styleUrls: ['./create.component.css']
+  templateUrl: './create.component.html'
 })
 export class RestaurantsCreateComponent {
   private name: string;
@@ -17,10 +16,17 @@ export class RestaurantsCreateComponent {
   private image: string;
   private _tags;
   private _menu;
-  private managerId;
+  //private currentUserRole;
+  private currentUserId;
 
-  constructor(private toastr: ToastrService, private authorize: AuthorizationService, private restaurantService: RestaurantService, private router: Router) {
-    this.authorize.getUser().subscribe(data => this.managerId = data.id);
+  constructor(private toastr: ToastrService, private authorizeService: AuthorizationService, private restaurantService: RestaurantService, private router: Router) {
+    this.authorizeService.getUser().subscribe(
+      user => {
+        //this.currentUserRole = user && user['role'];
+        this.currentUserId = user && user['id'];
+      },
+      error => console.log(error)
+    );
   }
 
   get tags(): string[] {
@@ -35,22 +41,19 @@ export class RestaurantsCreateComponent {
     this.image = event.imagePath;
   }
 
-  submit() {
+  create() {
     if (!this.name || !this.name.length) {
-      this.toastr.error('Please enter restaurant name', 'error');
+      this.toastr.error('Please enter restaurant name.');
       return;
     }
-    if (!this.managerId) {
-      this.toastr.error('Please log in to continue', 'error');
+    if (!this.currentUserId) {
+      this.toastr.error('Please log in to continue.');
       return;
     }
-    //console.log(this.managerId);
-    //console.log(this.facebook);
-    //console.log(this.twitter);
-    //console.log(this.instagram);
-    //console.log(this.image);
-    //console.log(this.tags);
-    //console.log(this.menu);
+    //if (!this.currentUserRole || this.currentUserRole !== 'Manager') {
+    //  this.toastr.error('You do not have permisssion to create a restaurant. Create manager account to continue.');
+    //  return;
+    //}
     const restaurant = {
       name: this.name,
       facebookLink: this.facebook,
@@ -59,15 +62,21 @@ export class RestaurantsCreateComponent {
       image: this.image,
       tags: this.tags || [],
       menu: this.menu || [],
-      managerId: this.managerId
+      managerId: this.currentUserId
     };
 
     console.log(restaurant);
 
-    this.restaurantService.postRestaurant(restaurant).subscribe(data => {
-      console.log(data);
-      this.toastr.success('Restaurant was added successfully', 'success');
-      this.router.navigate(['./restaurants']);
-    });
+    this.restaurantService.postRestaurant(restaurant).subscribe(
+      result => {
+        console.log(result);
+        this.toastr.success('Restaurant was added successfully.');
+        this.router.navigate(['./restaurants']);
+      },
+      error => {
+        this.toastr.error('Failed to add restaurant. Try again later.');
+        console.log(error);
+      }
+    );
   }
 }

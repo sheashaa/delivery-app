@@ -3,11 +3,13 @@ import { Component, Output, EventEmitter, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-upload',
-  templateUrl: './upload.component.html'
+  templateUrl: './upload.component.html',
+  styleUrls: ['./upload.component.css']
 })
 export class UploadComponent implements OnInit {
   @Output() public onUploaded = new EventEmitter();
   @Input() public image: string;
+  @Input() public size: string;
 
   constructor(private http: HttpClient) {
     if (!this.image) {
@@ -48,5 +50,16 @@ export class UploadComponent implements OnInit {
           this.onUploaded.emit(event.body);
         }
       });
+  }
+
+  sizeClass() {
+    switch (this.size) {
+      case 'small':
+      case 'medium':
+      case 'large':
+        return this.size;
+      default:
+        return 'large';
+    }
   }
 }

@@ -5,13 +5,13 @@
       <h2><span>Add New Restaurant</span></h2>
     </div>
 
-    <div class="d-flex flex-column flex-lg-row">
-      <div class="col-lg-3 p-3">
+    <div class="row align-items-center">
+      <div class="col-12 col-md-3 p-3">
         <div class="row justify-content-center">
-          <app-upload (onUploaded)="uploaded($event)" style="width: 250px; height: 250px;"></app-upload>
+          <app-upload (onUploaded)="uploaded($event)"></app-upload>
         </div>
       </div>
-      <div class="col-lg-9">
+      <div class="col-md-9">
         <div class="row">
           <div class="col-12 form-group">
             <input type="text" name="name" class="form-control" id="name" placeholder="Name" [(ngModel)]="name">
@@ -28,8 +28,10 @@
           <tag-input class="col-12 form-group" [(ngModel)]="_tags" [ngModelOptions]="{standalone: true}" [editable]="true" [identifyBy]="'id'" [displayBy]="'name'" [theme]="'dark'" placeholder="Tags" secondaryPlaceholder="Tags"></tag-input>
           <tag-input class="col-12 form-group" [(ngModel)]="_menu" [ngModelOptions]="{standalone: true}" [editable]="true" [identifyBy]="'id'" [displayBy]="'name'" [theme]="'dark'" placeholder="Menu" secondaryPlaceholder="Menu"></tag-input>
         </div>
-        <div class="text-center"><button class="btn-rounded">Add</button></div>
       </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="text-center"><button class="btn-rounded" (click)="create()">Add</button></div>
     </div>
   </div>
 </section>

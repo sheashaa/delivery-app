@@ -1,4 +1,4 @@
-<div class="image-upload-btn">
+<div class="upload" [ngClass]="sizeClass()">
   <img class="image" [src]="image" />
   <div class="overlay" (click)="file.click()">
     <div class="text">+</div>

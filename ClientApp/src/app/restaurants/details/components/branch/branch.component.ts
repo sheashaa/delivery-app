@@ -1,5 +1,6 @@
-import { Component, Input, ViewContainerRef } from '@angular/core';
+import { Component, Input, OnInit, ViewContainerRef } from '@angular/core';
 import { ModalDialogService } from 'ngx-modal-dialog';
+import { AuthorizationService } from '../../../../shared/authorization/authorization.service';
 import { BranchService } from '../../../../shared/services/branch.service';
 import { RestaurantService } from '../../../../shared/services/restaurant.service';
 import { BranchCreateDialogComponent } from './dialogs/create/create.component';
@@ -11,32 +12,45 @@ import { BranchUpdateDialogComponent } from './dialogs/update/update.component';
   selector: 'app-branch',
   templateUrl: './branch.component.html',
 })
-export class BranchComponent {
+export class BranchComponent implements OnInit {
   @Input() restaurantId;
+
   private restaurantName;
-
   private branches;
+  private currentUserId;
+  private managerId;
+  private isManager: boolean;
 
-  constructor(private modalDialogService: ModalDialogService, private viewContainer: ViewContainerRef, private restaurantService: RestaurantService, private branchService: BranchService) {
+  constructor(private modalDialogService: ModalDialogService, private viewContainer: ViewContainerRef, private restaurantService: RestaurantService, private branchService: BranchService, private authorizeService: AuthorizationService) {
 
   }
 
   ngOnInit() {
     if (this.restaurantId) {
-      this.restaurantService.getRestaurant(this.restaurantId).subscribe(data => {
-        this.restaurantName = data['name'];
-        this.branches = data['branches'];
-        console.log(this.branches);
-      });
+      this.restaurantService.getRestaurant(this.restaurantId).subscribe(
+        restaurant => {
+          this.restaurantName = restaurant['name'];
+          this.branches = restaurant['branches'] as [] || [];
+          this.managerId = restaurant['managerId'];
+          this.authorizeService.getUser().subscribe(
+            user => {
+              this.currentUserId = user && user['id'];
+              this.isManager = this.currentUserId === this.managerId;
+            },
+            error => console.log(error)
+          )
+        },
+        error => console.log(error)
+      );
     }
   }
 
-  addNewBranch() {
+  create() {
     this.modalDialogService.openDialog(this.viewContainer, {
       title: 'Add New Branch',
       childComponent: BranchCreateDialogComponent,
       settings: {
-        buttonClass: 'btn btn-warning',
+        buttonClass: 'btn-rounded',
       },
       data: {
         restaurantId: this.restaurantId
@@ -44,27 +58,25 @@ export class BranchComponent {
     });
   }
 
-  deleteBranch(id) {
+  delete(id) {
     this.modalDialogService.openDialog(this.viewContainer, {
       title: 'Remove Branch',
       childComponent: BranchDeleteDialogComponent,
       settings: {
-        buttonClass: 'btn btn-warning',
+        buttonClass: 'btn-rounded',
       },
       data: {
         branchId: id
       }
     });
-
-   
   }
 
-  editBranch(id) {
+  update(id) {
     this.modalDialogService.openDialog(this.viewContainer, {
-      title: 'Edit Branch',
+      title: 'Update Branch',
       childComponent: BranchUpdateDialogComponent,
       settings: {
-        buttonClass: 'btn btn-warning',
+        buttonClass: 'btn-rounded',
       },
       data: {
         branchId: id
@@ -72,11 +84,12 @@ export class BranchComponent {
     });
   }
 
-  showBranchLocation(id) {
+  showLocation(id) {
     this.modalDialogService.openDialog(this.viewContainer, {
       childComponent: BranchDetailsDialogComponent,
+      title: 'Location',
       settings: {
-        buttonClass: 'btn btn-warning',
+        buttonClass: 'btn-rounded',
       },
       data: {
         branchId: id

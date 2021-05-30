@@ -1,16 +1,41 @@
-<section id="menu" class="menu section-bg inner-page">
-  <div class="container" data-aos="fade-up">
+<section class="section-bg inner-page component-tabs">
+  <div class="container">
 
-    <div class="section-title d-flex flex-column flex-sm-row justify-content-between align-items-center">
-      <div class="flex-row">
-        <p>{{ restaurantName | titlecase }}</p>
-      </div>
-      <div class="flex-row">
-        <button class="btn btn-warning btn-lg" (click)="editRestaurant()">Edit</button>
-        <button class="btn btn-warning btn-lg" (click)="removeRestaurant()">Remove</button>
+    <div class="section-title" [ngClass]="isManager ? 'd-flex justify-content-between' : ''">
+      <h2><span>{{ restaurantName | titlecase }}</span></h2>
+      <div *ngIf="isManager">
+        <button class="btn-rounded mr-2" (click)="edit()"><i class="icofont-edit"></i> Edit</button>
+        <button class="btn-rounded mr-2" (click)="delete()"><i class="icofont-ui-delete"></i> Remove</button>
       </div>
     </div>
+
+    <div class="row">
+      <div class="col-lg-3">
+        <ul class="nav nav-tabs flex-column">
+          <li class="nav-item">
+            <a class="nav-link active show" data-toggle="tab" href="#meals">Meals</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#branches">Branches</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#orders">Orders</a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-lg-9 mt-4 mt-lg-0">
+        <div class="tab-content">
+          <div class="tab-pane active show" id="meals">
+            <app-meal [restaurantId]="restaurantId" class="row"></app-meal>
+          </div>
+          <div class="tab-pane" id="branches">
+            <app-branch [restaurantId]="restaurantId" class="row"></app-branch>
+          </div>
+          <div class="tab-pane" id="orders">
+
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </section>
-  <app-meal [restaurantId]="restaurantId"></app-meal>
-  <app-branch [restaurantId]="restaurantId"></app-branch>

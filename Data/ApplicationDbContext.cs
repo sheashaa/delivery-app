@@ -64,7 +64,6 @@ namespace DeliveryApp.Data
                 .HasConversion(v => string.Join(',', v), v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));
         }
 
-        public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<Branch> Branches { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderItem> OrderItems { get; set; }

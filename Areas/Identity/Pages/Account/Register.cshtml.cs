@@ -22,15 +22,18 @@ namespace DeliveryApp.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<RegisterModel> _logger;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
+            RoleManager<IdentityRole> roleManager,
             ILogger<RegisterModel> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
             _logger = logger;
         }
 
@@ -76,15 +79,24 @@ namespace DeliveryApp.Areas.Identity.Pages.Account
             Role = role;
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string returnUrl = null, string role = null)
         {
             returnUrl ??= Url.Content("~/");
+            role ??= "Customer";
+
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(Input.Email);
                 if (user != null)
                 {
                     ModelState.AddModelError(string.Empty, "User with email address already exists.");
+                    return Page();
+                }
+
+                var _role = await _roleManager.FindByNameAsync(role);
+                if (_role == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid user role.");
                     return Page();
                 }
 
@@ -96,9 +108,10 @@ namespace DeliveryApp.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
+                    await _userManager.AddToRoleAsync(newUser, role);
+
                     await _signInManager.SignInAsync(newUser, isPersistent: false);
                     return LocalRedirect(returnUrl);
-
                 }
                 foreach (var error in result.Errors)
                 {

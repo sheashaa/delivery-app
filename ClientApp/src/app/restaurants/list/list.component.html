@@ -1,17 +1,22 @@
 <section class="restaurants inner-page">
   <div class="container">
 
-    <div class="section-title">
+    <div class="section-title" [ngClass]="isManager ? 'd-flex justify-content-between' : ''">
       <h2><span>Restaurants</span></h2>
+      <button *ngIf="isManager" class="btn-rounded" (click)="create()"><i class="icofont-plus"></i> Restaurant</button>
     </div>
-
-    <div class="row">
-      <p *ngIf="!(restuarants && restaurants.length)">There are no restaurants :(</p>
+    <!--<div class="row">
+      <div class="col-12 col-md-8 form-group">
+        <input type="text" name="search" class="form-control" id="search" placeholder="Search" [(ngModel)]="search">
+      </div>
+    </div>-->
+    <div class="row justify-content-center">
+      <p *ngIf="!restaurants.length">There are no restaurants :(</p>
       <div *ngFor="let restaurant of restaurants" class="col-lg-4 col-md-6">
-        <div (click)="update(restaurant.id)" class="restaurant">
+        <div class="restaurant">
           <div class="image"><img [src]="restaurant.image" class="img-fluid" alt=""></div>
           <div class="restaurant-info">
-            <h4>{{ restaurant.name }}</h4>
+            <h4 (click)="update(restaurant.id)">{{ restaurant.name }}</h4>
             <span>{{ restaurant.tags | json }}</span>
             <div class="social">
               <a *ngIf="restaurant.twitterLink" [href]="restaurant.twitterLink"><i class="icofont-twitter"></i></a>

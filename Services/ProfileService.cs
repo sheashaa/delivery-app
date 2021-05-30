@@ -32,7 +32,6 @@ namespace DeliveryApp.Services
             Claim emailClaim = new Claim(JwtClaimTypes.Email, user.Email);
             Claim firstNameClaim = new Claim(JwtClaimTypes.GivenName, user.FirstName);
             Claim lastNameClaim = new Claim(JwtClaimTypes.FamilyName, user.LastName);
-            Claim addressesClaim = new Claim("addresses", JsonSerializer.Serialize(user.Addresses));
             
             IList<Claim> roleClaims = new List<Claim>();
             foreach (string role in roles)
@@ -46,7 +45,6 @@ namespace DeliveryApp.Services
             context.IssuedClaims.Add(firstNameClaim);
             context.IssuedClaims.Add(lastNameClaim);
             context.IssuedClaims.AddRange(roleClaims);
-            context.IssuedClaims.Add(addressesClaim);
         }
 
         public Task IsActiveAsync(IsActiveContext context)

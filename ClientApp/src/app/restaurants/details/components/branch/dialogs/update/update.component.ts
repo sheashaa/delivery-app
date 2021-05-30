@@ -26,43 +26,36 @@ export class BranchUpdateDialogComponent implements IModalDialog {
 
   private isLoaded: boolean;
 
-  constructor(private toastr: ToastrService, private authorize: AuthorizationService, private restaurantService: RestaurantService, private branchService: BranchService, private router: Router) {
+  constructor(private toastr: ToastrService, private authorizeService: AuthorizationService, private restaurantService: RestaurantService, private branchService: BranchService, private router: Router) {
     this.actionButtons = [
       {
         text: 'Update', onAction: () => {
           if (!this.governorate || !this.governorate.length) {
-            this.toastr.error('Please enter branch governorate', 'error');
-            //return true;
+            this.toastr.error('Please enter branch governorate.');
             return false;
           }
           if (!this.city || !this.city.length) {
-            this.toastr.error('Please enter branch city', 'error');
-            //return true;
+            this.toastr.error('Please enter branch city.');
             return false;
           }
           if (!this.street || !this.street.length) {
-            this.toastr.error('Please enter branch street', 'error');
-            //return true;
+            this.toastr.error('Please enter branch street.');
             return false;
           }
           if (!this.phone || !this.phone.length) {
-            this.toastr.error('Please enter branch phone', 'error');
-            //return true;
+            this.toastr.error('Please enter branch phone.');
             return false;
           }
           if (!this.longitude || !this.latitude) {
-            this.toastr.error('Please select branch location on map', 'error');
-            //return true;
+            this.toastr.error('Please select branch location on map.');
             return false;
           }
           if (!this.currentUserId) {
-            this.toastr.error('Please log in to continue', 'error');
-            //return true;
+            this.toastr.error('Please log in to continue.');
             return false;
           }
           if (!this.managerId || this.currentUserId !== this.managerId) {
-            this.toastr.error('You do not have permisssion to add this meal', 'error');
-            //return true;
+            this.toastr.error('You do not have permission to edit this branch.');
             return false;
           }
           const branch = {
@@ -78,17 +71,22 @@ export class BranchUpdateDialogComponent implements IModalDialog {
 
           console.log(branch);
 
-          this.branchService.putBranch(this.branchId, branch).subscribe(data => {
-            console.log(data);
-            this.toastr.success('Branch was updated successfully', 'success');
-            window.location.reload();
-          });
+          this.branchService.putBranch(this.branchId, branch).subscribe(
+            result => {
+              this.toastr.success('Branch was updated successfully');
+              window.location.reload();
+            },
+            error => console.log(error)
+          );
           return true;
         }
       },
       { text: 'Close', onAction: () => true },
     ];
-    this.authorize.getUser().subscribe(u => this.currentUserId = u && u.id);
+    this.authorizeService.getUser().subscribe(
+      user => this.currentUserId = user && user['id'],
+      error => console.log(error)
+    );
     this.isLoaded = false;
   }
 
@@ -111,5 +109,4 @@ export class BranchUpdateDialogComponent implements IModalDialog {
     this.longitude = event.longitude;
     this.latitude = event.latitude;
   }
-
 }

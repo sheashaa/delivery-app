@@ -33,8 +33,6 @@ export class BranchDetailsDialogComponent implements IModalDialog {
       this.latitude = parseFloat(branch['latitude']);
       this.longitude = parseFloat(branch['longitude']);
       this.isLoaded = true;
-
     });
   }
-
 }

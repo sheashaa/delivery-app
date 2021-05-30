@@ -1,27 +1,15 @@
-
-
-<div class="book-a-table" id="book-a-table">
-  <form role="form" class="custom-form form-row">
-    <div class="col-6 form-group">
-      <input type="text" name="governorate" class="form-control" id="governorate" placeholder="Governorate" [(ngModel)]="governorate">
-    </div>
-    <div class="col-6 form-group">
-      <input type="text" name="city" class="form-control" id="city" placeholder="City" [(ngModel)]="city">
-    </div>
-    <div class="col-12 form-group">
-      <input type="text" name="street" class="form-control" id="street" placeholder="Street" [(ngModel)]="street">
-    </div>
-    <div class="col-12 form-group">
-      <input type="text" name="phone" class="form-control" id="phone" placeholder="Phone" [(ngModel)]="phone">
-    </div>
-    <div class="col-6 form-group">
-      <input type="number" readonly name="longitude" class="form-control" id="longitude" placeholder="Longitude" [(ngModel)]="longitude">
-    </div>
-    <div class="col-6 form-group">
-      <input type="number" readonly name="latitude" class="form-control" id="latitude" placeholder="Latitude" [(ngModel)]="latitude">
-    </div>
-
-    <app-map *ngIf="isLoaded" (onLocationChanged)="setLocation($event)" [latitude]="latitude" [longitude]="longitude" style="width: 100%; height: 300px"></app-map>
-  </form>
+<div class="row">
+  <div class="col-4 form-group">
+    <input type="text" name="governorate" class="form-control" id="governorate" placeholder="Governorate" [(ngModel)]="governorate">
+  </div>
+  <div class="col-4 form-group">
+    <input type="text" name="city" class="form-control" id="city" placeholder="City" [(ngModel)]="city">
+  </div>
+  <div class="col-4 form-group">
+    <input type="text" name="phone" class="form-control" id="phone" placeholder="Phone" [(ngModel)]="phone">
+  </div>
+  <div class="col-12 form-group">
+    <input type="text" name="street" class="form-control" id="street" placeholder="Street" [(ngModel)]="street">
+  </div>
+  <app-map *ngIf="isLoaded" (onLocationChanged)="setLocation($event)" [latitude]="latitude" [longitude]="longitude" style="width: 100%; height: 300px"></app-map>
 </div>
-

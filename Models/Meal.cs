@@ -11,7 +11,6 @@ namespace DeliveryApp.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public double Price { get; set; }
-        public string Image { get; set; }
         public string MenuTag { get; set; }
         public int RestaurantId { get; set; }
         public virtual Restaurant Restaurant { get; set; }

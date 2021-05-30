@@ -12,7 +12,7 @@
         </div>
 
         <div class="col-md-4">
-            <form asp-route-returnUrl="@Model.ReturnUrl" method="post" role="form">
+            <form asp-route-returnUrl="@Model.ReturnUrl" asp-route-role="@Model.Role" method="post" role="form">
                 <h4>Create a new account.</h4>
                 <hr />
                 <div asp-validation-summary="All" class="text-danger"></div>

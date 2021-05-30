@@ -22,23 +22,29 @@ export class RestaurantDeleteDialogComponent implements IModalDialog {
       {
         text: 'Remove', onAction: () => {
           if (!this.currentUserId) {
-            this.toastr.error('Please log in to continue', 'error');
-            return true;
+            this.toastr.error('Please log in to continue.');
+            return false;
           }
           if (!this.managerId || this.currentUserId !== this.managerId) {
-            this.toastr.error('You do not have permisssion to delete this restaurant', 'error');
-            return true;
+            this.toastr.error('You do not have permisssion to delete this restaurant.');
+            return false;
           }
-          this.restaurantService.deleteRestaurant(this.restaurantId).subscribe(data => {
-            this.toastr.success('Restaurant was removed successfully', 'success');
-            this.router.navigate(['./restaurants']);
-          });
+          this.restaurantService.deleteRestaurant(this.restaurantId).subscribe(
+            result => {
+              this.toastr.success('Restaurant was removed successfully.');
+              this.router.navigate(['./restaurants']);
+            },
+            error => console.log(error)
+          );
           return true;
         }
       },
       { text: 'Close', onAction: () => true },
     ];
-    this.authorize.getUser().subscribe(u => this.currentUserId = u && u.id);
+    this.authorize.getUser().subscribe(
+      user => this.currentUserId = user && user['id'],
+      error => console.log(error)
+    );
   }
 
   dialogInit(reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions<any>>) {

@@ -1,6 +1,7 @@
 import { Component, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalDialogService } from 'ngx-modal-dialog';
+import { AuthorizationService } from '../../shared/authorization/authorization.service';
 import { RestaurantService } from '../../shared/services/restaurant.service';
 import { RestaurantDeleteDialogComponent } from './components/delete/delete.component';
 
@@ -11,30 +12,45 @@ import { RestaurantDeleteDialogComponent } from './components/delete/delete.comp
 export class RestaurantsDetailsComponent {
   private restaurantId;
   private restaurantName: string;
-  constructor(private modalDialogService: ModalDialogService, private viewContainer: ViewContainerRef, private route: ActivatedRoute, private router: Router, private restaurantService: RestaurantService) {
+  private currentUserId;
+  private managerId;
+  private isManager: boolean;
+
+  constructor(private modalDialogService: ModalDialogService, private viewContainer: ViewContainerRef, private route: ActivatedRoute, private router: Router, private restaurantService: RestaurantService, private authorizeService: AuthorizationService) {
+
     this.route.params.subscribe(params => {
       this.restaurantId = params['id'];
-      this.restaurantService.getRestaurant(this.restaurantId).subscribe(restaurant => {
-        this.restaurantName = restaurant['name'];
-      });
+      this.restaurantService.getRestaurant(this.restaurantId).subscribe(
+        restaurant => {
+          this.restaurantName = restaurant['name'];
+          this.managerId = restaurant['managerId'];
+          this.authorizeService.getUser().subscribe(
+            user => {
+              this.currentUserId = user && user['id']
+              this.isManager = this.managerId === this.currentUserId;
+            },
+            error => console.log(error)
+          );
+        },
+        error => console.log(error)
+      );
     });
   }
 
-  editRestaurant() {
+  edit() {
     this.router.navigate(['./restaurants/update/', this.restaurantId]);
   }
 
-  removeRestaurant() {
+  delete() {
     this.modalDialogService.openDialog(this.viewContainer, {
       title: 'Remove Restaurant',
       childComponent: RestaurantDeleteDialogComponent,
       settings: {
-        buttonClass: 'btn btn-warning',
+        buttonClass: 'btn-rounded',
       },
       data: {
         restaurantId: this.restaurantId
       }
     });
   }
-  
 }

@@ -4,8 +4,6 @@ import { IModalDialog, IModalDialogButton, IModalDialogOptions } from 'ngx-modal
 import { ToastrService } from 'ngx-toastr';
 import { AuthorizationService } from '../../../../../../shared/authorization/authorization.service';
 import { BranchService } from '../../../../../../shared/services/branch.service';
-import { MealService } from '../../../../../../shared/services/meal.service';
-import { RestaurantService } from '../../../../../../shared/services/restaurant.service';
 
 @Component({
   selector: 'app-branch-delete-dialog',
@@ -24,23 +22,28 @@ export class BranchDeleteDialogComponent implements IModalDialog {
       {
         text: 'Remove', onAction: () => {
           if (!this.currentUserId) {
-            this.toastr.error('Please log in to continue', 'error');
+            this.toastr.error('Please log in to continue.');
             return false;
           }
           if (!this.managerId || this.currentUserId !== this.managerId) {
-            this.toastr.error('You do not have permisssion to delete this branch', 'error');
+            this.toastr.error('You do not have permisssion to delete this branch.');
             return false;
           }
-          this.branchService.deleteBranch(this.branchId).subscribe(data => {
-            this.toastr.success('Branch was removed successfully', 'success');
-            window.location.reload();
-          });
+          this.branchService.deleteBranch(this.branchId).subscribe(
+            result => {
+              this.toastr.success('Branch was removed successfully.');
+              window.location.reload();
+            },
+            error => console.log(error)
+          );
           return true;
         }
       },
       { text: 'Close', onAction: () => true },
     ];
-    this.authorize.getUser().subscribe(u => this.currentUserId = u && u.id);
+    this.authorize.getUser().subscribe(
+      user => this.currentUserId = user && user['id']
+    );
   }
 
   dialogInit(reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions<any>>) {

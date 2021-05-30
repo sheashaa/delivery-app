@@ -20,21 +20,32 @@ export class RestaurantsUpdateComponent {
   private managerId;
   private currentUserId;
 
-  constructor(private route: ActivatedRoute, private toastr: ToastrService, private authorize: AuthorizationService, private restaurantService: RestaurantService, private router: Router) {
-    this.authorize.getUser().subscribe(data => this.currentUserId = data.id);
+  constructor(
+    private authorizeService: AuthorizationService,
+    private restaurantService: RestaurantService,
+    private toastr: ToastrService,
+    private route: ActivatedRoute,
+    private router: Router) {
+    this.authorizeService.getUser().subscribe(
+      user => this.currentUserId = user && user['id'],
+      error => console.log(error)
+    );
     this.route.params.subscribe(params => {
       this.id = params['id'];
-      this.restaurantService.getRestaurant(this.id).subscribe(data => {
-        console.log(data);
-        this.name = data['name'];
-        this.facebook = data['facebookLink'];
-        this.twitter = data['twitterLink'];
-        this.instagram = data['instagramLink'];
-        this.image = data['image'];
-        this.tags = data['tags'];
-        this.menu = data['menu'];
-        this.managerId = data['managerId'];
-      });
+      this.restaurantService.getRestaurant(this.id).subscribe(
+        restaurant => {
+          console.log(restaurant);
+          this.name = restaurant['name'];
+          this.facebook = restaurant['facebookLink'];
+          this.twitter = restaurant['twitterLink'];
+          this.instagram = restaurant['instagramLink'];
+          this.image = restaurant['image'];
+          this.tags = restaurant['tags'];
+          this.menu = restaurant['menu'];
+          this.managerId = restaurant['managerId'];
+        },
+        error => console.log(error)
+      );
     });
   }
 
@@ -58,22 +69,20 @@ export class RestaurantsUpdateComponent {
     this.image = event.imagePath;
   }
 
-  submit() {
+  update() {
     if (!this.name || !this.name.length) {
-      this.toastr.error('Please enter restaurant name', 'error');
+      this.toastr.error('Please enter restaurant name.');
+      return;
+    }
+    if (!this.currentUserId) {
+      this.toastr.error('Please log in to continue.');
       return;
     }
     if (!this.managerId || this.managerId !== this.currentUserId) {
-      this.toastr.error('Please log in to continue', 'error');
+      this.toastr.error('You do not have permission to edit this restaurant.');
       return;
     }
-    //console.log(this.managerId);
-    //console.log(this.facebook);
-    //console.log(this.twitter);
-    //console.log(this.instagram);
-    //console.log(this.image);
-    //console.log(this.tags);
-    //console.log(this.menu);
+
     const restaurant = {
       id: this.id,
       name: this.name,
@@ -88,10 +97,13 @@ export class RestaurantsUpdateComponent {
 
     console.log(restaurant);
 
-    this.restaurantService.putRestaurant(this.id, restaurant).subscribe(data => {
-      console.log(data);
-      this.toastr.success('Restaurant was updated successfully', 'success');
-      this.router.navigate(['./restaurants']);
-    });
+    this.restaurantService.putRestaurant(this.id, restaurant).subscribe(
+      result => {
+        console.log(result);
+        this.toastr.success('Restaurant was updated successfully');
+        this.router.navigate(['./restaurants']);
+      },
+      error => console.log(error)
+    );
   }
 }
