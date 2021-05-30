@@ -49,9 +49,6 @@ export class BranchComponent implements OnInit {
     this.modalDialogService.openDialog(this.viewContainer, {
       title: 'Add New Branch',
       childComponent: BranchCreateDialogComponent,
-      settings: {
-        buttonClass: 'btn-rounded',
-      },
       data: {
         restaurantId: this.restaurantId
       }
@@ -62,9 +59,6 @@ export class BranchComponent implements OnInit {
     this.modalDialogService.openDialog(this.viewContainer, {
       title: 'Remove Branch',
       childComponent: BranchDeleteDialogComponent,
-      settings: {
-        buttonClass: 'btn-rounded',
-      },
       data: {
         branchId: id
       }
@@ -75,9 +69,6 @@ export class BranchComponent implements OnInit {
     this.modalDialogService.openDialog(this.viewContainer, {
       title: 'Update Branch',
       childComponent: BranchUpdateDialogComponent,
-      settings: {
-        buttonClass: 'btn-rounded',
-      },
       data: {
         branchId: id
       }
@@ -88,9 +79,6 @@ export class BranchComponent implements OnInit {
     this.modalDialogService.openDialog(this.viewContainer, {
       childComponent: BranchDetailsDialogComponent,
       title: 'Location',
-      settings: {
-        buttonClass: 'btn-rounded',
-      },
       data: {
         branchId: id
       }

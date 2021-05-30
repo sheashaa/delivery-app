@@ -1,11 +1,11 @@
-<section class="section-bg inner-page component-tabs">
+<section class="inner-page component-tabs">
   <div class="container">
 
-    <div class="section-title" [ngClass]="isManager ? 'd-flex justify-content-between' : ''">
+    <div class="section-title" [ngClass]="isManager ? 'd-flex justify-content-between align-items-center' : ''">
       <h2><span>{{ restaurantName | titlecase }}</span></h2>
       <div *ngIf="isManager">
-        <button class="btn-rounded mr-2" (click)="edit()"><i class="icofont-edit"></i> Edit</button>
-        <button class="btn-rounded mr-2" (click)="delete()"><i class="icofont-ui-delete"></i> Remove</button>
+        <button class="btn-rounded bg-primary mr-2" (click)="edit()"><i class="icofont-edit"></i> Edit</button>
+        <button class="btn-rounded bg-danger mr-2" (click)="delete()"><i class="icofont-ui-delete"></i> Remove</button>
       </div>
     </div>
 

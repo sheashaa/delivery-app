@@ -14,27 +14,23 @@ export class CartComponent {
 
   private currentUserId: boolean;
   private _cart;
+  private total: number;
 
   constructor(private toastr: ToastrService, private cart: CartService, private authService: AuthorizationService, private router: Router, private orderService: OrderService, private orderItemService: OrderItemService) {
     authService.getUser().subscribe(user => this.currentUserId = user.id);
-    this._cart = cart.get();
+    this.refresh();
   }
 
   refresh() {
     this._cart = this.cart.get();
+    this.total = 0;
+    for (const item of this._cart) {
+      this.total += item.price * item.quantity;
+    }
+    this.total = parseFloat(this.total.toFixed(2));
   }
 
-  increment(mealId) {
-    this.cart.increment(mealId);
-    this.refresh();
-  }
-
-  decrement(mealId) {
-    this.cart.decrement(mealId);
-    this.refresh();
-  }
-
-  removeItem(mealId) {
+  delete(mealId) {
     this.cart.remove(mealId);
     this.refresh();
   }
@@ -81,4 +77,8 @@ export class CartComponent {
 
   }
 
+  changeQuantity(event, mealId) {
+    this.cart.setQuantity(mealId, event.target.value);
+    this.refresh();
+  }
 }

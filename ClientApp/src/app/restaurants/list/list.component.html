@@ -3,7 +3,7 @@
 
     <div class="section-title" [ngClass]="isManager ? 'd-flex justify-content-between' : ''">
       <h2><span>Restaurants</span></h2>
-      <button *ngIf="isManager" class="btn-rounded" (click)="create()"><i class="icofont-plus"></i> Restaurant</button>
+      <button *ngIf="isManager" class="btn-rounded bg-success" (click)="create()"><i class="icofont-plus"></i> Restaurant</button>
     </div>
     <!--<div class="row">
       <div class="col-12 col-md-8 form-group">
@@ -19,9 +19,9 @@
             <h4 (click)="update(restaurant.id)">{{ restaurant.name }}</h4>
             <span>{{ restaurant.tags | json }}</span>
             <div class="social">
-              <a *ngIf="restaurant.twitterLink" [href]="restaurant.twitterLink"><i class="icofont-twitter"></i></a>
-              <a *ngIf="restaurant.facebookLink" [href]="restaurant.facebookLink"><i class="icofont-facebook"></i></a>
-              <a *ngIf="restaurant.instagramLink" [href]="restaurant.instagramLink"><i class="icofont-instagram"></i></a>
+              <a *ngIf="restaurant.twitterLink" [href]="'https://www.twitter.com/' + restaurant.twitterLink"><i class="icofont-twitter"></i></a>
+              <a *ngIf="restaurant.facebookLink" [href]="'https://www.facebook.com/' + restaurant.facebookLink"><i class="icofont-facebook"></i></a>
+              <a *ngIf="restaurant.instagramLink" [href]="'https://www.instagram.com/' + restaurant.instagramLink"><i class="icofont-instagram"></i></a>
             </div>
           </div>
         </div>

@@ -18,7 +18,7 @@
       <ul>
         <li class="active"><a [routerLink]='["./"]'>Home</a></li>
 
-        <li class="cart text-center"><a [routerLink]='["./orders/cart"]'>Cart <i class="icofont-opencart"></i></a></li>
+        <li class="cart text-center"><a [routerLink]='["./orders/cart"]' data-toggle="tooltip" data-placement="bottom" [title]="cartLength">Cart <i class="icofont-opencart"></i></a></li>
       </ul>
     </nav>
 

@@ -17,7 +17,6 @@ export class MealUpdateDialogComponent implements IModalDialog {
   private name: string;
   private description: string;
   private price: number;
-  private image: string;
   private menuTag: string;
   private restaurantId: number;
   private managerId: string;
@@ -29,69 +28,73 @@ export class MealUpdateDialogComponent implements IModalDialog {
       {
         text: 'Update', onAction: () => {
           if (!this.name || !this.name.length) {
-            this.toastr.error('Please enter meal name', 'error');
-            return true;
+            this.toastr.error('Please enter meal name.');
+            return false;
           }
           if (!this.description || !this.description.length) {
-            this.toastr.error('Please enter meal description', 'error');
-            return true;
+            this.toastr.error('Please enter meal description.');
+            return false;
           }
           if (!this.price || Number.isNaN(this.price)) {
-            this.toastr.error('Please enter meal price', 'error');
-            return true;
+            this.toastr.error('Please enter meal price.');
+            return false;
           }
           if (!this.menuTag || !this.menuTag.length) {
-            this.toastr.error('Please select meal menu tag', 'error');
-            return true;
+            this.toastr.error('Please select meal menu tag.');
+            return false;
           }
           if (!this.currentUserId) {
-            this.toastr.error('Please log in to continue', 'error');
-            return true;
+            this.toastr.error('Please log in to continue.');
+            return false;
           }
           if (!this.managerId || this.currentUserId !== this.managerId) {
-            this.toastr.error('You do not have permisssion to add this meal', 'error');
-            return true;
+            this.toastr.error('You do not have permisssion to edit this meal.');
+            return false;
           }
+
           const meal = {
             id: this.mealId,
             name: this.name,
             description: this.description,
             price: this.price,
-            image: this.image,
             menuTag: this.menuTag,
             restaurantId: this.restaurantId
           };
 
           console.log(meal);
 
-          this.mealService.putMeal(this.mealId, meal).subscribe(data => {
-            console.log(data);
-            this.toastr.success('Meal was updated successfully', 'success');
-            window.location.reload();
-          });
+          this.mealService.putMeal(this.mealId, meal).subscribe(
+            result => {
+              this.toastr.success('Meal was updated successfully.');
+              window.location.reload();
+            },
+            error => console.log(error)
+          );
           return true;
-        }
+        },
+        buttonClass: 'btn-rounded bg-primary'
       },
-      { text: 'Close', onAction: () => true },
+      { text: 'Close', onAction: () => true, buttonClass: 'btn-rounded' },
     ];
-    this.authorize.getUser().subscribe(u => this.currentUserId = u && u.id);
+    this.authorize.getUser().subscribe(
+      user => this.currentUserId = user && user['id'],
+      error => console.log(error)
+    );
   }
 
   dialogInit(reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions<any>>) {
     this.mealId = options.data.mealId;
-    this.mealService.getMeal(this.mealId).subscribe(meal => {
-      this.name = meal['name'];
-      this.description = meal['description'];
-      this.price = parseFloat(meal['price']);
-      this.image = meal['image'];
-      this.menuTag = meal['menuTag'];
-      this.restaurantId = parseInt(meal['restaurantId']);
-      this.managerId = meal['restaurant']['managerId'];
-      this.menu = meal['restaurant']['menu'];
-    });
-  }
-
-  uploaded(event) {
-    this.image = event.imagePath;
+    this.mealService.getMeal(this.mealId).subscribe(
+      meal => {
+        this.name = meal['name'];
+        this.description = meal['description'];
+        this.price = parseFloat(meal['price']);
+        this.menuTag = meal['menuTag'];
+        this.restaurantId = parseInt(meal['restaurantId']);
+        this.managerId = meal['restaurant']['managerId'];
+        this.menu = meal['restaurant']['menu'];
+      },
+      error => console.log(error)
+    );
   }
 }

@@ -37,9 +37,10 @@ export class RestaurantDeleteDialogComponent implements IModalDialog {
             error => console.log(error)
           );
           return true;
-        }
+        },
+        buttonClass: 'btn-rounded bg-danger'
       },
-      { text: 'Close', onAction: () => true },
+      { text: 'Close', onAction: () => true, buttonClass: 'btn-rounded' },
     ];
     this.authorize.getUser().subscribe(
       user => this.currentUserId = user && user['id'],

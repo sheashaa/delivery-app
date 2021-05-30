@@ -1,6 +1,22 @@
 !(function ($) {
   "use strict";
+  $(document).ready(function () {
+    setTimeout(function () {
+      var mealsIsotope = $('.meals-container').isotope({
+        itemSelector: '.meal',
+        layoutMode: 'fitRows'
+      });
 
+      $('#meals-filters li').on('click', function () {
+        $("#meals-filters li").removeClass('filter-active');
+        $(this).addClass('filter-active');
+
+        mealsIsotope.isotope({
+          filter: $(this).data('filter')
+        });
+      });
+    }, 2000);
+  });
   
 
   // Mobile Navigation

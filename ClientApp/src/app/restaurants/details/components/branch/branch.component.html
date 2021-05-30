@@ -1,7 +1,7 @@
 <div class="container">
   <div class="section-title" [ngClass]="isManager ? 'd-flex justify-content-between' : ''">
     <h2><span>Branches</span></h2>
-    <button *ngIf="isManager" class="btn-rounded" (click)="create()"><i class="icofont-plus"></i> Branch</button>
+    <button *ngIf="isManager" class="btn-rounded bg-success" (click)="create()"><i class="icofont-plus"></i> Branch</button>
   </div>
   <p *ngIf="branches && !branches.length">There are no branches :(</p>
   <div *ngIf="branches && branches.length" class="table-responsive w-100">
@@ -12,7 +12,7 @@
           <th scope="col">City</th>
           <th scope="col">Address</th>
           <th scope="col">Phone</th>
-          <th scope="col"></th>
+          <th scope="col" style="width: 20%;"></th>
         </tr>
       </thead>
       <tbody>
@@ -22,9 +22,9 @@
           <td>{{ branch.street | titlecase }}, {{ branch.city | titlecase }}, {{ branch.governorate | titlecase }}</td>
           <td>{{ branch.phone }}</td>
           <td>
-            <button *ngIf="isManager" class="btn btn-primary" (click)="update(branch.id)"><i class="icofont-edit"></i></button>
-            <button *ngIf="isManager" class="btn btn-danger ml-2" (click)="delete(branch.id)"><i class="icofont-ui-delete"></i></button>
-            <button class="btn btn-success ml-2" (click)="showLocation(branch.id)"><i class="icofont-google-map"></i></button>
+            <button *ngIf="isManager" class="btn btn-sm btn-primary" (click)="update(branch.id)"><i class="icofont-edit"></i></button>
+            <button *ngIf="isManager" class="btn btn-sm btn-danger ml-2" (click)="delete(branch.id)"><i class="icofont-ui-delete"></i></button>
+            <button class="btn btn-sm btn-success ml-2" (click)="showLocation(branch.id)"><i class="icofont-google-map"></i></button>
           </td>
         </tr>
       </tbody>

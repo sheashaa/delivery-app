@@ -4,7 +4,9 @@ import { AuthorizationService } from '../../../../shared/authorization/authoriza
 import { MealService } from '../../../../shared/services/meal.service';
 import { RestaurantService } from '../../../../shared/services/restaurant.service';
 import { MealCreateDialogComponent } from './dialogs/create/create.component';
+import { MealDeleteDialogComponent } from './dialogs/delete/delete.component';
 import { MealDetailsDialogComponent } from './dialogs/details/details.component';
+import { MealUpdateDialogComponent } from './dialogs/update/update.component';
 
 @Component({
   selector: 'app-meal',
@@ -17,9 +19,8 @@ export class MealComponent implements OnInit {
   private restaurantName;
   private menu = [];
   private filters = [];
-  private targets = [];
-  private meals;
   private filterPerMeal = [];
+  private meals;
   private currentUserId;
   private managerId;
   private isManager: boolean;
@@ -33,15 +34,17 @@ export class MealComponent implements OnInit {
       this.restaurantService.getRestaurant(this.restaurantId).subscribe(
         restaurant => {
           this.restaurantName = restaurant['name'];
-          this.menu = restaurant['menu'];
-          for (const item of this.menu) {
-            const filter = 'filter-' + item;
-            this.filters.push(filter);
-            this.targets.push('.' + filter);
-          }
           this.meals = restaurant['meals'];
+          this.filters = [];
           for (const i in this.meals) {
-            this.filterPerMeal[i] = 'filter-' + this.meals[i].menuTag;
+            const hashedTag = this.hash(this.meals[i].menuTag);
+            const mealFilter = 'filter-' + hashedTag;
+            const filter = '.' + mealFilter;
+            this.filterPerMeal[i] = mealFilter;
+            if (!this.menu.includes(this.meals[i].menuTag)) {
+              this.filters.push(filter);
+              this.menu.push(this.meals[i].menuTag);
+            }
           }
 
           this.managerId = restaurant['managerId'];
@@ -58,13 +61,21 @@ export class MealComponent implements OnInit {
     }
   }
 
+  hash(str) {
+    var hash = 0, i, chr;
+    if (str.length === 0) return hash;
+    for (i = 0; i < str.length; i++) {
+      chr = str.charCodeAt(i);
+      hash = ((hash << 5) - hash) + chr;
+      hash |= 0;
+    }
+    return hash;
+  }
+
   create() {
     this.modalDialogService.openDialog(this.viewContainer, {
       title: 'Add New Meal',
       childComponent: MealCreateDialogComponent,
-      settings: {
-        buttonClass: 'btn-rounded',
-      },
       data: {
         restaurantId: this.restaurantId
       }
@@ -75,29 +86,31 @@ export class MealComponent implements OnInit {
     this.modalDialogService.openDialog(this.viewContainer, {
       title: 'Meal Information',
       childComponent: MealDetailsDialogComponent,
-      settings: {
-        buttonClass: 'btn-rounded',
-      },
+      data: {
+        mealId: id,
+        currentUserId: this.currentUserId,
+        managerId: this.managerId
+      }
+    });
+  }
+
+  delete(id) {
+    this.modalDialogService.openDialog(this.viewContainer, {
+      title: 'Remove Meal',
+      childComponent: MealDeleteDialogComponent,
       data: {
         mealId: id
       }
     });
   }
 
-  refresh() {
-      //var menuIsotope = $('.menu-container').isotope({
-      //  itemSelector: '.menu-item',
-      //  layoutMode: 'fitRows'
-      //});
-
-      //$('#menu-flters li').on('click', function () {
-      //  $("#menu-flters li").removeClass('filter-active');
-      //  $(this).addClass('filter-active');
-
-      //  menuIsotope.isotope({
-      //    filter: $(this).data('filter')
-      //  });
-      //});
-    
+  update(id) {
+    this.modalDialogService.openDialog(this.viewContainer, {
+      title: 'Update Meal',
+      childComponent: MealUpdateDialogComponent,
+      data: {
+        mealId: id
+      }
+    });
   }
 }

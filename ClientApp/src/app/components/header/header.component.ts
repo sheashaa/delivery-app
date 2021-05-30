@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthorizationService } from '../../shared/authorization/authorization.service';
 import { Router } from '@angular/router';
+import { CartService } from '../../shared/services/cart.service';
 
 @Component({
   selector: 'app-header',
@@ -10,8 +11,10 @@ export class HeaderComponent {
   isAuthenticated: boolean;
   userName: string;
   role: string;
+  cartLength;
 
-  constructor(private authorizeService: AuthorizationService, private router: Router) {
+  constructor(private cart: CartService, private authorizeService: AuthorizationService, private router: Router) {
+    this.cartLength = this.cart.length;
     this.authorizeService.isAuthenticated().subscribe(
       isAuthenticated => {
         this.isAuthenticated = isAuthenticated;

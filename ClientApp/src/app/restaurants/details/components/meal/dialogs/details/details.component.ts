@@ -1,11 +1,9 @@
-import { Component, ComponentRef } from '@angular/core';
-import { Router } from '@angular/router';
-import { IModalDialog, IModalDialogButton, IModalDialogOptions } from 'ngx-modal-dialog';
+import { Component, ComponentRef, ViewContainerRef } from '@angular/core';
+import { IModalDialog, IModalDialogButton, IModalDialogOptions, ModalDialogService } from 'ngx-modal-dialog';
 import { ToastrService } from 'ngx-toastr';
 import { AuthorizationService } from '../../../../../../shared/authorization/authorization.service';
 import { CartService } from '../../../../../../shared/services/cart.service';
 import { MealService } from '../../../../../../shared/services/meal.service';
-import { RestaurantService } from '../../../../../../shared/services/restaurant.service';
 
 @Component({
   selector: 'app-meal-details-dialog',
@@ -17,10 +15,9 @@ export class MealDetailsDialogComponent implements IModalDialog {
   private name: string;
   private description: string;
   private price: number;
-  private image: string;
   private mealId: number;
 
-  constructor(private toastr: ToastrService, private mealService: MealService, private cartService: CartService) {
+  constructor(private toastr: ToastrService, private mealService: MealService, private cartService: CartService, private authorizeService: AuthorizationService) {
     this.actionButtons = [
       {
         text: 'Add To Cart', onAction: () => {
@@ -29,30 +26,30 @@ export class MealDetailsDialogComponent implements IModalDialog {
               mealId: this.mealId,
               name: this.name,
               quantity: 1,
-              price: this.price,
-              image: this.image
+              price: this.price
             };
-            console.log(item);
-            this.cartService.push(item);
-            this.toastr.success('Meal was added to cart');
+
+            if (this.cartService.push(item)) {
+              this.toastr.success('Meal was added to cart.')
+            }
             return true;
           }
-        }
+        },
+        buttonClass: 'btn-rounded'
       },
-      { text: 'Close', onAction: () => true },
+      { text: 'Close', onAction: () => true, buttonClass: 'btn-rounded' },
     ];
   }
 
   dialogInit(reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions<any>>) {
     this.mealId = options.data.mealId;
-    this.mealService.getMeal(this.mealId).subscribe(meal => {
-      this.name = meal['name'];
-      this.description = meal['description'];
-      this.price = parseFloat(meal['price']);
-      this.image = meal['image'];
-    });
+    this.mealService.getMeal(this.mealId).subscribe(
+      meal => {
+        this.name = meal['name'];
+        this.description = meal['description'];
+        this.price = parseFloat(meal['price']);
+      },
+      error => console.log(error)
+    );
   }
-
-
-
 }

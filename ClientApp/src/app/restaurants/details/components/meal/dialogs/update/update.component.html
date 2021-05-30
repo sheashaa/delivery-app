@@ -1,23 +1,17 @@
-
-
-<div class="book-a-table" id="book-a-table">
-  <!--<app-upload (onUploaded)="uploaded($event)"></app-upload>-->
-  <form role="form" class="custom-form form-row">
-    <div class="col-12 form-group">
-      <input type="text" name="name" class="form-control" id="name" placeholder="Name" [(ngModel)]="name">
-    </div>
-    <div class="col-12 form-group">
-      <input type="text" name="description" class="form-control" id="description" placeholder="Description" [(ngModel)]="description">
-    </div>
-    <div class="col-12 form-group">
-      <input type="number" name="price" class="form-control" id="price" placeholder="Price" [(ngModel)]="price">
-    </div>
-    <div class="col-12 form-group">
-      <select [(ngModel)]="menuTag" name="menuTag" class="form-control" id="menuTag" placeholder="Menu Tag">
-        <option *ngFor="let tag of menu" [ngValue]="tag">{{ tag }}</option>
-      </select>
-    </div>
-
-  </form>
+<div class="row">
+  <div class="col-12 form-group">
+    <input type="text" name="name" class="form-control" id="name" placeholder="Name" [(ngModel)]="name">
+  </div>
+  <div class="col-12 form-group">
+    <input type="text" name="description" class="form-control" id="description" placeholder="Description" [(ngModel)]="description">
+  </div>
+  <div class="col-12 form-group">
+    <input type="number" name="price" class="form-control" id="price" placeholder="Price" [(ngModel)]="price">
+  </div>
+  <div class="col-12 form-group">
+    <select [(ngModel)]="menuTag" name="menuTag" id="menuTag" class="custom-select form-control">
+      <option selected [ngValue]="null">Menu Tag</option>
+      <option *ngFor="let tag of menu" [ngValue]="tag">{{ tag }}</option>
+    </select>
+  </div>
 </div>
-

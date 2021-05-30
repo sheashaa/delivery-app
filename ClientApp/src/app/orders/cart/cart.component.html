@@ -1,33 +1,44 @@
-<section id="why-us" class="why-us section-bg inner-page">
-  <div class="container" data-aos="fade-up">
+<section class="inner-page">
+  <div class="container">
 
     <div class="section-title">
-      <h2>Cart</h2>
-      <p>Check your order</p>
+      <h2><span>Cart</span></h2>
     </div>
 
-    <div class="flex-row" data-aos="fade-up" data-aos-delay="100">
-
-      <div *ngFor="let item of _cart; index as i" class="col-12">
-        <div class="box">
-          <div class="d-flex flex-row">
-            <img [src]="item.image" class="circular-image" />
-            <div>
-              <span>{{ i + 1 }}</span>
-              <h4>{{ item.name }}</h4>
-              <p>{{ item.price }}</p>
-              <p>{{ item.quantity }}</p>
-            </div>
-          </div>
-          <button class="btn btn-warning btn-lg" (click)="increment(item.mealId)">+1</button>
-          <button class="btn btn-warning btn-lg" (click)="decrement(item.mealId)">-1</button>
-          <button class="btn btn-warning btn-lg" (click)="removeItem(item.mealId)">Remove</button>
-        </div>
-      </div>
-
-
+    <p *ngIf="_cart && !cart.length">Cart is empty :(</p>
+    <div *ngIf="_cart && _cart.length" class="table-responsive w-100">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col" style="width: 10%;">#</th>
+            <th scope="col" style="width: 40%;">Name</th>
+            <th scope="col" style="width: 10%;">Quantity</th>
+            <th scope="col" style="width: 30%;">Price</th>
+            <th scope="col" style="width: 10%;"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of _cart; index as i">
+            <th scope="row">{{ i + 1 }}</th>
+            <td>{{ item.name | titlecase }}</td>
+            <td><input (change)="changeQuantity($event, item.mealId)" [value]="item.quantity" type="number" class="form-control" min="1" max="10"></td>
+            <td>{{ item.price }}LE * {{ item.quantity }} = {{ item.price * item.quantity }}LE</td>
+            <td>
+              <button class="btn btn-danger" (click)="delete(item.mealId)"><i class="icofont-ui-delete"></i></button>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr class="table-info">
+            <th scope="col" colspan="3">Total</th>
+            <td colspan="2">{{ total }}LE</td>
+          </tr>
+        </tfoot>
+      </table>
     </div>
-    <button class="btn btn-warning btn-lg" (click)="checkOut()">Check Out</button>
 
+    <div class="row justify-content-center">
+      <button *ngIf="_cart && _cart.length" class="btn-rounded btn-lg" (click)="checkOut()">Check Out</button>
+    </div>
   </div>
 </section>

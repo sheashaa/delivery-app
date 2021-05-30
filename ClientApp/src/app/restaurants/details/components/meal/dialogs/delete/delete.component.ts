@@ -19,36 +19,46 @@ export class MealDeleteDialogComponent implements IModalDialog {
   private managerId: string;
   private currentUserId: string;
 
-  constructor(private toastr: ToastrService, private authorize: AuthorizationService, private restaurantService: RestaurantService, private mealService: MealService, private router: Router) {
+  constructor(private toastr: ToastrService, private authorizeService: AuthorizationService, private restaurantService: RestaurantService, private mealService: MealService, private router: Router) {
     this.actionButtons = [
       {
         text: 'Remove', onAction: () => {
           if (!this.currentUserId) {
-            this.toastr.error('Please log in to continue', 'error');
-            return true;
+            this.toastr.error('Please log in to continue.');
+            return false;
           }
           if (!this.managerId || this.currentUserId !== this.managerId) {
-            this.toastr.error('You do not have permisssion to delete this meal', 'error');
-            return true;
+            this.toastr.error('You do not have permisssion to remove this meal.');
+            return false;
           }
-          this.mealService.deleteMeal(this.mealId).subscribe(data => {
-            this.toastr.success('Meal was removed successfully', 'success');
-            window.location.reload();
-          });
+          this.mealService.deleteMeal(this.mealId).subscribe(
+            result => {
+              this.toastr.success('Meal was removed successfully.');
+              window.location.reload();
+            },
+            error => console.log(error)
+          );
           return true;
-        }
+        },
+        buttonClass: 'btn-rounded bg-danger'
       },
-      { text: 'Close', onAction: () => true },
+      { text: 'Close', onAction: () => true, buttonClass: 'btn-rounded' },
     ];
-    this.authorize.getUser().subscribe(u => this.currentUserId = u && u.id);
+    this.authorizeService.getUser().subscribe(
+      user => this.currentUserId = user && user['id'],
+      error => console.log(error)
+    );
   }
 
   dialogInit(reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions<any>>) {
     this.mealId = options.data.mealId;
-    this.mealService.getMeal(this.mealId).subscribe(meal => {
-      this.mealName = meal['name'];
-      this.restaurantId = parseInt(meal['restaurantId']);
-      this.managerId = meal['restaurant']['managerId'];
-    });
+    this.mealService.getMeal(this.mealId).subscribe(
+      meal => {
+        this.mealName = meal['name'];
+        this.restaurantId = parseInt(meal['restaurantId']);
+        this.managerId = meal['restaurant']['managerId'];
+      },
+      error => console.log(error)
+    );
   }
 }

@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { MealService } from './meal.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
 
-  constructor(private mealService: MealService) {
+  constructor(private toastr: ToastrService) {
 
   }
 
@@ -18,16 +18,38 @@ export class CartService {
     localStorage.setItem('cart', JSON.stringify(cart || []));
   }
 
+  setQuantity(mealId, quantity) {
+    const cart = this.get();
+    const index = cart.findIndex(item => item.mealId === mealId);
+    if (index >= 0) {
+      if (quantity <= 0 || quantity > 10) {
+        this.toastr.error('Can not order more than 10 of the same meal.');
+        return;
+      }
+      cart[index].quantity = quantity;
+    }
+    this.set(cart);
+    console.log(mealId);
+    console.log(quantity);
+  }
+
   push(item) {
     const cart = this.get();
     const index = cart.findIndex(_item => _item.mealId === item.mealId);
     if (index >= 0) {
-      cart[index].quantity += item.quantity ? item.quantity : 1;
+      item.quantity = item.quantity ? item.quantity : 1;
+      const totalQuantity = cart[index].quantity + item.quantity;
+      if (totalQuantity > 10) {
+        this.toastr.error('Can not order more than 10 of the same meal.');
+        return false;
+      }
+      cart[index].quantity = totalQuantity;
     }
     else {
       cart.push(item);
     }
     this.set(cart);
+    return true;
   }
 
   remove(mealId) {
@@ -37,40 +59,6 @@ export class CartService {
       cart.splice(index, 1);
     }
     this.set(cart);
-  }
-
-  increment(mealId) {
-    const cart = this.get();
-    const index = cart.findIndex(item => item.mealId === mealId);
-    if (index >= 0) {
-      console.log(cart[index]);
-      cart[index].quantity++;
-      this.set(cart);
-    }
-    else {
-      this.mealService.getMeal(mealId).subscribe(meal => {
-        if (meal) {
-          const item = {
-            mealId,
-            name: meal['name'],
-            quantity: 1,
-            price: meal['price'],
-            image: meal['image']
-          }
-          this.push(item);
-        }
-      })
-    }
-  }
-
-  decrement(mealId) {
-    const cart = this.get();
-    const index = cart.findIndex(item => item.mealId === mealId);
-    if (index >= 0) {
-      console.log(cart[index]);
-      cart[index].quantity = (cart[index].quantity - 1) || 1;
-      this.set(cart);
-    }
   }
 
   clear() {

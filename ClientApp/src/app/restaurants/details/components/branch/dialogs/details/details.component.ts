@@ -22,7 +22,7 @@ export class BranchDetailsDialogComponent implements IModalDialog {
 
   constructor(private toastr: ToastrService, private authorize: AuthorizationService, private branchService: BranchService, private router: Router) {
     this.actionButtons = [
-      { text: 'Close', onAction: () => true },
+      { text: 'Close', onAction: () => true, buttonClass: 'btn-rounded' },
     ];
     this.isLoaded = false;
   }
