@@ -1,23 +1,23 @@
+function initMealsAnimationScript() {
+  setTimeout(function () {
+    var mealsIsotope = $('.meals-container').isotope({
+      itemSelector: '.meal',
+      layoutMode: 'fitRows'
+    });
+
+    $('#meals-filters li').on('click', function () {
+      $("#meals-filters li").removeClass('filter-active');
+      $(this).addClass('filter-active');
+
+      mealsIsotope.isotope({
+        filter: $(this).data('filter')
+      });
+    });
+  }, 1000);
+}
+
 !(function ($) {
   "use strict";
-  $(document).ready(function () {
-    setTimeout(function () {
-      var mealsIsotope = $('.meals-container').isotope({
-        itemSelector: '.meal',
-        layoutMode: 'fitRows'
-      });
-
-      $('#meals-filters li').on('click', function () {
-        $("#meals-filters li").removeClass('filter-active');
-        $(this).addClass('filter-active');
-
-        mealsIsotope.isotope({
-          filter: $(this).data('filter')
-        });
-      });
-    }, 2000);
-  });
-  
 
   // Mobile Navigation
   if ($('.nav-menu').length) {
@@ -49,7 +49,7 @@
     $(".mobile-nav, .mobile-nav-toggle").hide();
   }
 
-  
+
 
   // Toggle .header-scrolled class to #header when page is scrolled
   $(window).scroll(function () {
@@ -88,10 +88,10 @@
     $(this).find('p, .btn-menu, .btn-book').addClass('animate__animated animate__fadeInUp');
   });
 
-  
+
 
   // Menu list isotope and filter
-  
+
 
   // Testimonials carousel (uses the Owl Carousel library)
   $(".events-carousel").owlCarousel({
@@ -109,6 +109,6 @@
     items: 1
   });
 
-  
+
 
 })(jQuery);

@@ -18,6 +18,18 @@ export class CartService {
     localStorage.setItem('cart', JSON.stringify(cart || []));
   }
 
+  setAddress(address) {
+    localStorage.setItem('address', JSON.stringify(address));
+  }
+
+  getAddress() {
+    return JSON.parse(localStorage.getItem('address'));
+  }
+
+  clearAddress() {
+    localStorage.removeItem('address');
+  }
+
   setQuantity(mealId, quantity) {
     const cart = this.get();
     const index = cart.findIndex(item => item.mealId === mealId);

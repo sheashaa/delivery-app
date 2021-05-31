@@ -17,6 +17,8 @@
     <nav class="nav-menu d-none d-lg-block">
       <ul>
         <li class="active"><a [routerLink]='["./"]'>Home</a></li>
+        <li class="active"><a [routerLink]='["./restaurants"]'>Restaurants</a></li>
+        <li *ngIf="isAuthenticated" class="active"><a [routerLink]='["./orders"]'>Orders</a></li>
 
         <li class="cart text-center"><a [routerLink]='["./orders/cart"]' data-toggle="tooltip" data-placement="bottom" [title]="cartLength">Cart <i class="icofont-opencart"></i></a></li>
       </ul>

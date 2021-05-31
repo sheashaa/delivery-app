@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { LogoutActions, ApplicationPaths, ReturnUrlType } from '../authorization.constants';
 import { ToastrService } from 'ngx-toastr';
+import { CartService } from '../../services/cart.service';
 
 // The main responsibility of this component is to handle the user's logout process.
 // This is the starting point for the logout process, which is usually initiated when a
@@ -20,7 +21,8 @@ export class LogoutComponent implements OnInit {
   constructor(
     private authorizeService: AuthorizationService,
     private activatedRoute: ActivatedRoute,
-    private router: Router) { }
+    private router: Router,
+    private cart: CartService) { }
 
   async ngOnInit() {
     const action = this.activatedRoute.snapshot.url[1];
@@ -42,6 +44,8 @@ export class LogoutComponent implements OnInit {
       case LogoutActions.LoggedOut:
         //this.message.next('You successfully logged out!');
         console.info('You successfully logged out!');
+        this.cart.clear();
+        this.cart.clearAddress();
         break;
       default:
         throw new Error(`Invalid action '${action}'`);
@@ -60,6 +64,8 @@ export class LogoutComponent implements OnInit {
         case AuthenticationResultStatus.Redirect:
           break;
         case AuthenticationResultStatus.Success:
+          this.cart.clear();
+          this.cart.clearAddress();
           //await this.navigateToReturnUrl(returnUrl);
           this.router.navigate(['./']);
           break;
@@ -73,6 +79,8 @@ export class LogoutComponent implements OnInit {
     } else {
       //this.message.next('You successfully logged out!');
       console.info('You successfully logged out!');
+      this.cart.clear();
+      this.cart.clearAddress();
     }
   }
 
@@ -86,6 +94,8 @@ export class LogoutComponent implements OnInit {
         // is when we are doing a redirect sign in flow.
         throw new Error('Should not redirect.');
       case AuthenticationResultStatus.Success:
+        this.cart.clear();
+        this.cart.clearAddress();
         //await this.navigateToReturnUrl(this.getReturnUrl(result.state));
         await this.router.navigate(['./']);
         break;

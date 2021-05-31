@@ -1,24 +1,59 @@
-<section id="why-us" class="why-us section-bg inner-page">
-  <div class="container" data-aos="fade-up">
+<section class="inner-page">
+  <div class="container">
 
     <div class="section-title">
-      <h2>Orders</h2>
-      <p>Order History</p>
+      <h2><span>Orders</span></h2>
     </div>
 
-    <div class="flex-row" data-aos="fade-up" data-aos-delay="100">
-
-      <div *ngFor="let order of orders; index as i" class="col-12" style="cursor: pointer" (click)="viewOrderDetails(order.id)">
-        <div class="box">
-          <span>{{ i + 1 }}</span>
-          <h4>{{ parseDateTime(order.dateTime) }}</h4>
-          <p>{{ getStatus(order.status) }}</p>
-          <button *ngIf="isQueued(order.status)" class="btn btn-warning btn-lg" (click)="cancel(order.id)">Cancel</button>
-        </div>
-      </div>
-
-
+    <div class="btn-group btn-group-toggle p-2 w-100" role="group" data-toggle="buttons">
+      <label class="btn btn-sm btn-outline-primary active">
+        <input [checked]="showQueued" (change)="showQueued = !showQueued; getOrders()" type="checkbox"> Queued
+      </label>
+      <label class="btn btn-sm btn-outline-secondary">
+        <input [checked]="showPreparing" (change)="showPreparing = !showPreparing; getOrders()" type="checkbox"> Preparing
+      </label>
+      <label class="btn btn-sm btn-outline-success">
+        <input [checked]="showPrepared" (change)="showPrepared = !showPrepared; getOrders()" type="checkbox"> Prepared
+      </label>
+      <label class="btn btn-sm btn-outline-danger">
+        <input [checked]="showDelivering" (change)="showDelivering = !showDelivering; getOrders()" type="checkbox"> Delivering
+      </label>
+      <label class="btn btn-sm btn-outline-warning">
+        <input [checked]="showDelivered" (change)="showDelivered = !showDelivered; getOrders()" type="checkbox"> Delivered
+      </label>
+      <label class="btn btn-sm btn-outline-info">
+        <input [checked]="showCancelled" (change)="showCancelled = !showCancelled; getOrders()" type="checkbox"> Cancelled
+      </label>
     </div>
 
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Date</th>
+            <th scope="col">Status</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody *ngIf="orders && !orders.length">
+          <tr>
+            <td class="text-center" colspan="4">There are no orders :(</td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="orders && orders.length">
+          <tr *ngFor="let order of orders; index as i">
+            <th scope="row">{{ i + 1 }}</th>
+            <td>{{ getDateTime(order.dateTime) }}</td>
+            <td>{{ getStatus(order.status) }}</td>
+            <td>
+              <button class="btn btn-sm btn-info mr-2" data-toggle="tooltip" data-placement="top" title="Order Details" [routerLink]='["./details", order.id]'><i class="icofont-info"></i></button>
+              <button *ngIf="isQueued(order.status)" class="btn btn-sm btn-warning mr-2" data-toggle="tooltip" data-placement="top" title="Change Address" (click)="changeAddress(order.id)"><i class="icofont-google-map"></i></button>
+              <button *ngIf="isQueued(order.status)" class="btn btn-sm btn-danger mr-2" data-toggle="tooltip" data-placement="top" title="Cancel Order" (click)="cancel(order.id)"><i class="icofont-close"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </section>

@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { ModalDialogService } from 'ngx-modal-dialog';
 import { ToastrService } from 'ngx-toastr';
 import { AuthorizationService } from '../../shared/authorization/authorization.service';
 import { CartService } from '../../shared/services/cart.service';
 import { OrderService } from '../../shared/services/order.service';
 import { OrderItemService } from '../../shared/services/orderitem.service';
+import { AddressComponent } from '../address/address.component';
 
 @Component({
   selector: 'app-cart',
@@ -16,7 +18,7 @@ export class CartComponent {
   private _cart;
   private total: number;
 
-  constructor(private toastr: ToastrService, private cart: CartService, private authService: AuthorizationService, private router: Router, private orderService: OrderService, private orderItemService: OrderItemService) {
+  constructor(private modalDialogService: ModalDialogService, private viewContainer: ViewContainerRef, private toastr: ToastrService, private cart: CartService, private authService: AuthorizationService, private router: Router, private orderService: OrderService, private orderItemService: OrderItemService) {
     authService.getUser().subscribe(user => this.currentUserId = user.id);
     this.refresh();
   }
@@ -36,45 +38,13 @@ export class CartComponent {
   }
 
   checkOut() {
-    if (!this.currentUserId) {
-      this.toastr.error('Please login to continue', 'error');
-      return;
-    }
-    if (!this.cart.length) {
-      this.toastr.error('Cart is empty', 'error');
-      return;
-    }
-    this.orderService.postOrder({ customerId: this.currentUserId }).subscribe(order => {
-
-      const orderId = order['id'];
-      const cart = this.cart.get();
-      for (const item of cart) {
-        const orderItem = {
-          name: item.name,
-          quantity: item.quantity,
-          price: item.price,
-          discount: item.discount,
-          orderId,
-          mealId: item.mealId
-        };
-
-        this.orderItemService.postOrderItem(orderItem).subscribe(
-        //  null, error => {
-
-        //  if (error) {
-        //  this.toastr.error('something horribe happened. aborting...', 'error');
-        //    this.orderService.deleteOrder(orderId).subscribe(result => {
-        //      return;
-        //    })
-        //  }
-        //}
-        );
+    this.modalDialogService.openDialog(this.viewContainer, {
+      childComponent: AddressComponent,
+      title: 'Set your location',
+      data: {
+        isNewOrder: true
       }
-      this.cart.clear();
-      this.refresh();
     });
-
-
   }
 
   changeQuantity(event, mealId) {

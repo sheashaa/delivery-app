@@ -8,6 +8,8 @@ import { MealDeleteDialogComponent } from './dialogs/delete/delete.component';
 import { MealDetailsDialogComponent } from './dialogs/details/details.component';
 import { MealUpdateDialogComponent } from './dialogs/update/update.component';
 
+declare function initMealsAnimationScript(): any;
+
 @Component({
   selector: 'app-meal',
   templateUrl: './meal.component.html',
@@ -46,7 +48,7 @@ export class MealComponent implements OnInit {
               this.menu.push(this.meals[i].menuTag);
             }
           }
-
+          initMealsAnimationScript();
           this.managerId = restaurant['managerId'];
           this.authorizeService.getUser().subscribe(
             user => {

@@ -45,9 +45,6 @@ export class RestaurantsDetailsComponent {
     this.modalDialogService.openDialog(this.viewContainer, {
       title: 'Remove Restaurant',
       childComponent: RestaurantDeleteDialogComponent,
-      settings: {
-        buttonClass: 'btn-rounded',
-      },
       data: {
         restaurantId: this.restaurantId
       }

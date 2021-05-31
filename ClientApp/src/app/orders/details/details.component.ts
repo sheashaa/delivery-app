@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-orders-details',
+  selector: 'app-order-details',
   templateUrl: './details.component.html'
 })
 export class OrdersDetailsComponent {
-  
+
 }

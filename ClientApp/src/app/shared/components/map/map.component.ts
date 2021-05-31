@@ -20,19 +20,22 @@ export class MapComponent implements OnInit {
     console.log(this.longitude);
     console.log(this.isStatic);
 
-    this.longitude = this.longitude || 0;
-    this.latitude = this.latitude || 0;
+    this.longitude = this.longitude || 29.871903452398;
+    this.latitude = this.latitude || 26.4941838299718;
 
     mapboxgl.accessToken = environment.mapboxToken;
     const map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/streets-v11',
       center: [this.longitude, this.latitude],
-      zoom: 13
+      maxBounds: [
+        [24.6928900008484, 21.9838004],
+        [36.9936810988403, 31.7117958927326]
+      ],
     });
 
     const marker = new mapboxgl.Marker({
-      draggable: true
+      draggable: !this.isStatic
     })
       .setLngLat([this.longitude, this.latitude])
       .addTo(map);
