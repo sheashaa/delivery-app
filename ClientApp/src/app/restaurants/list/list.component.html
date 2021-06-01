@@ -5,14 +5,32 @@
       <h2><span>Restaurants</span></h2>
       <button *ngIf="isManager" class="btn-rounded bg-success" (click)="create()"><i class="icofont-plus"></i> Restaurant</button>
     </div>
-    <!--<div class="row">
-      <div class="col-12 col-md-8 form-group">
-        <input type="text" name="search" class="form-control" id="search" placeholder="Search" [(ngModel)]="search">
+    <div *ngIf="restaurants" class="input-group mb-3 search-bar">
+      <input type="text" class="form-control" placeholder="Restaurant's Name" aria-label="Restaurant's Name" aria-describedby="basic-addon2" [(ngModel)]="searchText">
+      <div class="input-group-append">
+        <button class="btn btn-danger" type="button" (click)="clear()"><i class="icofont-close"></i></button>
       </div>
-    </div>-->
+      <div class="input-group-append">
+        <div *ngIf="tags" class="dropdown">
+          <button class="btn btn-danger dropdown-toggle rounded-0" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Tags
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div *ngFor="let tag of tags; index as i" class="form-check form-check-inline dropdown-item" (click)="toggle(tag); $event.stopPropagation(); false">
+              <input class="form-check-input" type="checkbox" id="inlineCheckbox1" [checked]="isActive(tag)">
+              <label class="form-check-label" for="inlineCheckbox1"> {{ tag }}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="input-group-append">
+        <button class="btn btn-danger search-btn" type="button" (click)="search()"><i class="icofont-ui-search"></i> Search</button>
+      </div>
+    </div>
+    
     <div class="row justify-content-center">
-      <p *ngIf="!restaurants.length">There are no restaurants :(</p>
-      <div *ngFor="let restaurant of restaurants" class="col-lg-4 col-md-6">
+      <p *ngIf="!filtered.length">There are no restaurants :(</p>
+      <div *ngFor="let restaurant of filtered" class="col-lg-4 col-md-6">
         <div class="restaurant">
           <div class="image"><img [src]="restaurant.image" class="img-fluid" alt=""></div>
           <div class="restaurant-info">

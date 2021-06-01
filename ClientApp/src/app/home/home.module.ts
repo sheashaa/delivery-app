@@ -14,6 +14,7 @@ import { ContactComponent } from './components/contact/contact.component';
 import { HomeComponent } from './home.component';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -21,7 +22,9 @@ import { SharedModule } from '../shared/shared.module';
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
     ]),
-    SharedModule
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   declarations: [
     HeroComponent,

@@ -41,13 +41,14 @@ export class RestaurantsDetailsComponent {
     this.router.navigate(['./restaurants/update/', this.restaurantId]);
   }
 
-  delete() {
-    this.modalDialogService.openDialog(this.viewContainer, {
-      title: 'Remove Restaurant',
-      childComponent: RestaurantDeleteDialogComponent,
-      data: {
-        restaurantId: this.restaurantId
-      }
-    });
-  }
+  // this sucks, dont do it
+  //delete() {
+  //  this.modalDialogService.openDialog(this.viewContainer, {
+  //    title: 'Remove Restaurant',
+  //    childComponent: RestaurantDeleteDialogComponent,
+  //    data: {
+  //      restaurantId: this.restaurantId
+  //    }
+  //  });
+  //}
 }

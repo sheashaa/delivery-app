@@ -14,14 +14,14 @@ export class UploadComponent implements OnInit {
   constructor(private http: HttpClient) {
     if (!this.image) {
       const defaultImages = [
-        "https://localhost:44392/assets/img/restaurants/1.jpg",
-        "https://localhost:44392/assets/img/restaurants/2.jpg",
-        "https://localhost:44392/assets/img/restaurants/3.jpg",
-        "https://localhost:44392/assets/img/restaurants/4.jpg",
-        "https://localhost:44392/assets/img/restaurants/5.jpg",
-        "https://localhost:44392/assets/img/restaurants/6.jpg",
-        "https://localhost:44392/assets/img/restaurants/7.jpg",
-        "https://localhost:44392/assets/img/restaurants/8.jpg",
+        "https://localhost:44392/assets/img/restaurants/1.jpeg",
+        "https://localhost:44392/assets/img/restaurants/2.jpeg",
+        "https://localhost:44392/assets/img/restaurants/3.jpeg",
+        "https://localhost:44392/assets/img/restaurants/4.jpeg",
+        "https://localhost:44392/assets/img/restaurants/5.jpeg",
+        "https://localhost:44392/assets/img/restaurants/6.jpeg",
+        "https://localhost:44392/assets/img/restaurants/7.jpeg",
+        "https://localhost:44392/assets/img/restaurants/8.jpeg",
       ];
       const randomImageIdx = Math.floor(Math.random() * defaultImages.length);
       this.image = defaultImages[randomImageIdx];

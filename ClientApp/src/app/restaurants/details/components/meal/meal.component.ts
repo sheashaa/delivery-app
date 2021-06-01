@@ -91,7 +91,8 @@ export class MealComponent implements OnInit {
       data: {
         mealId: id,
         currentUserId: this.currentUserId,
-        managerId: this.managerId
+        managerId: this.managerId,
+        restaurantId: this.restaurantId
       }
     });
   }

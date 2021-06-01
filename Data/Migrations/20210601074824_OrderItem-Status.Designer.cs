@@ -4,14 +4,16 @@ using DeliveryApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DeliveryApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210601074824_OrderItem-Status")]
+    partial class OrderItemStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -252,9 +254,6 @@ namespace DeliveryApp.Data.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int?>("RestaurantId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Status")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
@@ -265,8 +264,6 @@ namespace DeliveryApp.Data.Migrations
                     b.HasIndex("MealId");
 
                     b.HasIndex("OrderId");
-
-                    b.HasIndex("RestaurantId");
 
                     b.ToTable("OrderItems");
                 });
@@ -442,21 +439,21 @@ namespace DeliveryApp.Data.Migrations
                         new
                         {
                             Id = "0A3A9831-8DBA-4F86-996A-FD3A40CC0030",
-                            ConcurrencyStamp = "55c371b9-2b54-41b8-836a-0838dd721ffb",
+                            ConcurrencyStamp = "e94f21b9-4800-401e-9011-d4aee028fd65",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
                             Id = "3E0A855D-6FCB-4C23-850E-C13B567621A5",
-                            ConcurrencyStamp = "a94cf05f-a7df-4e25-b834-20943bf261e0",
+                            ConcurrencyStamp = "3ee539e0-7e7c-40fd-b5a4-e0ec812150b9",
                             Name = "Courier",
                             NormalizedName = "COURIER"
                         },
                         new
                         {
                             Id = "4973D731-E8B6-4982-8D96-0E4A0368E581",
-                            ConcurrencyStamp = "e1a08b0d-0281-48f2-aa74-cdfec5c662ca",
+                            ConcurrencyStamp = "b49027f7-7780-42e7-bb28-e91db03d1716",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -630,11 +627,6 @@ namespace DeliveryApp.Data.Migrations
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("DeliveryApp.Models.Restaurant", null)
-                        .WithOne()
-                        .HasForeignKey("DeliveryApp.Models.OrderItem", "RestaurantId")
-                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Meal");
 

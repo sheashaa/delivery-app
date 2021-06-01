@@ -5,7 +5,7 @@
       <h2><span>{{ restaurantName | titlecase }}</span></h2>
       <div *ngIf="isManager">
         <button class="btn-rounded bg-primary mr-2" (click)="edit()"><i class="icofont-edit"></i> Edit</button>
-        <button class="btn-rounded bg-danger mr-2" (click)="delete()"><i class="icofont-ui-delete"></i> Remove</button>
+        <!--<button class="btn-rounded bg-danger mr-2" (click)="delete()"><i class="icofont-ui-delete"></i> Remove</button>-->
       </div>
     </div>
 
@@ -18,7 +18,7 @@
           <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#branches">Branches</a>
           </li>
-          <li class="nav-item">
+          <li *ngIf="isManager" class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#orders">Orders</a>
           </li>
         </ul>
@@ -31,8 +31,8 @@
           <div class="tab-pane" id="branches">
             <app-branch [restaurantId]="restaurantId" class="row"></app-branch>
           </div>
-          <div class="tab-pane" id="orders">
-
+          <div *ngIf="isManager" class="tab-pane" id="orders">
+            <app-resturants-orders [restaurantId]="restaurantId" class="row"></app-resturants-orders>
           </div>
         </div>
       </div>

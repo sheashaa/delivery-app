@@ -16,6 +16,7 @@ export class MealDetailsDialogComponent implements IModalDialog {
   private description: string;
   private price: number;
   private mealId: number;
+  private restaurantId: number;
 
   constructor(private toastr: ToastrService, private mealService: MealService, private cartService: CartService, private authorizeService: AuthorizationService) {
     this.actionButtons = [
@@ -26,7 +27,8 @@ export class MealDetailsDialogComponent implements IModalDialog {
               mealId: this.mealId,
               name: this.name,
               quantity: 1,
-              price: this.price
+              price: this.price,
+              restaurantId: this.restaurantId
             };
 
             if (this.cartService.push(item)) {
@@ -43,6 +45,7 @@ export class MealDetailsDialogComponent implements IModalDialog {
 
   dialogInit(reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions<any>>) {
     this.mealId = options.data.mealId;
+    this.restaurantId = options.data.restaurantId;
     this.mealService.getMeal(this.mealId).subscribe(
       meal => {
         this.name = meal['name'];

@@ -1,0 +1,55 @@
+<div class="container">
+  <div class="section-title">
+    <h2><span>Orders</span></h2>
+  </div>
+
+  <div class="btn-group btn-group-toggle p-2 w-100" role="group" data-toggle="buttons">
+    <label class="btn btn-sm btn-outline-primary active">
+      <input [checked]="showQueued" (change)="showQueued = !showQueued; getOrderItems()" type="checkbox"> Queued
+    </label>
+    <label class="btn btn-sm btn-outline-secondary">
+      <input [checked]="showPreparing" (change)="showPreparing = !showPreparing; getOrderItems()" type="checkbox"> Preparing
+    </label>
+    <label class="btn btn-sm btn-outline-success">
+      <input [checked]="showPrepared" (change)="showPrepared = !showPrepared; getOrderItems()" type="checkbox"> Prepared
+    </label>
+    <label class="btn btn-sm btn-outline-info">
+      <input [checked]="showCancelled" (change)="showCancelled = !showCancelled; getOrderItems()" type="checkbox"> Cancelled
+    </label>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Date</th>
+          <th scope="col">Qty/$</th>
+          <th scope="col">Meal#</th>
+          <th scope="col">Status</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody *ngIf="orderItems && !orderItems.length">
+        <tr>
+          <td class="text-center" colspan="7">There are no orders :(</td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="orderItems && orderItems.length">
+        <tr *ngFor="let orderItem of orderItems; index as i" [ngClass]="getStatusClass(orderItem.status)">
+          <th scope="row">{{ i + 1 }}</th>
+          <td>{{ orderItem.name }}</td>
+          <td>{{ getDateTime(orderItem.dateTime) }}</td>
+          <td>{{ orderItem.quantity }} * {{ orderItem.price }}LE = {{ orderItem.quantity * orderItem.price }}LE</td>
+          <td>{{ orderItem.mealId ? orderItem.mealId : 'N/A' }}</td>
+          <td>{{ getStatus(orderItem.status) }}</td>
+          <td>
+            <button *ngIf="orderItem.status == 0" (click)="setStatus(orderItem, 1)" class="btn btn-sm btn-warning m-1" data-toggle="tooltip" data-placement="top" title="Prepare"><i class="icofont-clock-time"></i></button>
+            <button *ngIf="orderItem.status == 1" (click)="setStatus(orderItem, 2)" class="btn btn-sm btn-danger m-1" data-toggle="tooltip" data-placement="top" title="Done"><i class="icofont-restaurant"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

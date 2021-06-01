@@ -42,7 +42,7 @@
           </tr>
         </tbody>
         <tbody *ngIf="orders && orders.length">
-          <tr *ngFor="let order of orders; index as i">
+          <tr *ngFor="let order of orders; index as i" [ngClass]="getStatusClass(order.status)">
             <th scope="row">{{ i + 1 }}</th>
             <td>{{ getDateTime(order.dateTime) }}</td>
             <td>{{ getStatus(order.status) }}</td>

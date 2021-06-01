@@ -23,6 +23,7 @@ namespace DeliveryApp.Data
         {
             base.OnConfiguring(optionsBuilder);
             optionsBuilder.UseLazyLoadingProxies();
+            optionsBuilder.EnableSensitiveDataLogging(true);
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -56,8 +57,11 @@ namespace DeliveryApp.Data
 
             builder.Entity<OrderItem>().HasOne(m => m.Meal).WithOne().OnDelete(DeleteBehavior.SetNull);
             builder.Entity<OrderItem>().HasIndex(m => m.MealId).IsUnique(false);
+            builder.Entity<OrderItem>().HasOne<Restaurant>().WithOne().HasForeignKey("OrderItem", "RestaurantId").OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<OrderItem>().HasIndex("RestaurantId").IsUnique(false);
             builder.Entity<Order>().Property(s => s.DateTime).HasDefaultValueSql("GETDATE()");
             builder.Entity<Order>().Property(o => o.Status).HasDefaultValue(OrderStatus.Queued);
+            builder.Entity<OrderItem>().Property(oi => oi.Status).HasDefaultValue(OrderItemStatus.Queued);
             builder.Entity<Restaurant>().Property(r => r.Tags)
                 .HasConversion(v => string.Join(',', v), v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));
             builder.Entity<Restaurant>().Property(r => r.Menu)

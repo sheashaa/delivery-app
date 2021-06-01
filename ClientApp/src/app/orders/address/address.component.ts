@@ -109,20 +109,11 @@ export class AddressComponent implements IModalDialog {
                     price: item.price,
                     discount: item.discount,
                     orderId: this.orderId,
-                    mealId: item.mealId
+                    mealId: item.mealId,
+                    restaurantId: item.restaurantId
                   };
 
                   observables.push(this.orderItemService.postOrderItem(orderItem));
-                  //  error => {
-                  //    console.log(error);
-                  //    this.toastr.error('Could not complete your order.');
-                  //    this.orderService.deleteOrder(this.orderId).subscribe(null,
-                  //      error => console.log(error)
-                  //    );
-                  //    return;
-                  //  }
-
-                  //);
                 }
                 forkJoin(observables).subscribe(
                   result => {

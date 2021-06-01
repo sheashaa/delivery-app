@@ -90,6 +90,16 @@
         margin: 0 2px;
       }
 
+  .restaurants .search-bar input {
+    border-bottom-left-radius: 50px;
+    border-top-left-radius: 50px;
+  }
+
+  .restaurants .search-bar .search-btn {
+    border-bottom-right-radius: 50px;
+    border-top-right-radius: 50px;
+  }
+
 @media (max-width: 992px) {
   .restaurants .restaurant {
     margin-bottom: 110px;
