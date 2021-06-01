@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { forkJoin, Observable } from 'rxjs';
 import { AuthorizationService } from '../../../../../../shared/authorization/authorization.service';
 import { MealService } from '../../../../../../shared/services/meal.service';
+import { OrderService } from '../../../../../../shared/services/order.service';
 import { OrderItemService } from '../../../../../../shared/services/orderitem.service';
 import { RestaurantService } from '../../../../../../shared/services/restaurant.service';
 
@@ -20,8 +21,9 @@ export class MealDeleteDialogComponent implements IModalDialog {
   private restaurantId: number;
   private managerId: string;
   private currentUserId: string;
+  private orders;
 
-  constructor(private toastr: ToastrService, private authorizeService: AuthorizationService, private restaurantService: RestaurantService, private mealService: MealService, private router: Router, private orderItemService: OrderItemService) {
+  constructor(private toastr: ToastrService, private orderService: OrderService, private authorizeService: AuthorizationService, private restaurantService: RestaurantService, private mealService: MealService, private router: Router, private orderItemService: OrderItemService) {
     this.actionButtons = [
       {
         text: 'Remove', onAction: () => {
@@ -45,10 +47,27 @@ export class MealDeleteDialogComponent implements IModalDialog {
                 }
                 forkJoin(observables).subscribe(
                   result => {
-                    this.mealService.deleteMeal(this.mealId).subscribe(
+                    const _orders = this.orders.filter(order => (order['items'] as Array<any>).filter(item => items.includes(item)));
+                    let orderObservables: Array<Observable<any>> = [];
+                    for (const order of _orders) {
+                      if (this.isCancellable(order)) {
+                        order['status'] = 5;
+                        orderObservables.push(this.orderService.putOrder(order['id'], order));
+                      }
+                      else if (this.isDeliverable(order)) {
+                        order['status'] = 3;
+                        orderObservables.push(this.orderService.putOrder(order['id'], order));
+                      }
+                    }
+                    forkJoin(orderObservables).subscribe(
                       result => {
-                        this.toastr.success('Meal was removed successfully.');
-                        window.location.reload();
+                        this.mealService.deleteMeal(this.mealId).subscribe(
+                          result => {
+                            this.toastr.success('Meal was removed successfully.');
+                            window.location.reload();
+                          },
+                          error => console.log(error)
+                        );
                       },
                       error => console.log(error)
                     );
@@ -67,7 +86,7 @@ export class MealDeleteDialogComponent implements IModalDialog {
               }
             }
           )
-          
+
           return true;
         },
         buttonClass: 'btn-rounded bg-danger'
@@ -90,5 +109,22 @@ export class MealDeleteDialogComponent implements IModalDialog {
       },
       error => console.log(error)
     );
+    this.orderService.getOrders().subscribe(
+      orders => this.orders = orders.body as [] || [],
+      error => console.log(error)
+    );
+  }
+
+  isCancellable(order) {
+    return (order['items'] as Array<any>).filter(item => item['status'] == 0 || item['status'] == 1 || item['status'] == 2).length == 0;
+  }
+
+  isDeliverable(order) {
+    const all = (order['items'] as Array<any>).length;
+    const prepared = (order['items'] as Array<any>).filter(item => item['status'] == 2).length;
+    const queuedAndPreparing = (order['items'] as Array<any>).filter(item => item['status'] == 0 || item['status'] == 1).length;
+    const cancelled = (order['items'] as Array<any>).filter(item => item['status'] == 3).length;
+    const equal = all == (prepared + cancelled);
+    return queuedAndPreparing == 0 && equal;
   }
 }

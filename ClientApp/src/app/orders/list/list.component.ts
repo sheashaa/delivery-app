@@ -61,7 +61,7 @@ export class OrdersListComponent {
   }
 
   sortDateTime(a, b) {
-    return Date.parse(a['dateTime']) - Date.parse(a['dateTime']);
+    return Date.parse(b['dateTime']) - Date.parse(a['dateTime']);
   }
 
   getOrders() {
@@ -107,9 +107,9 @@ export class OrdersListComponent {
   getStatusClass(status) {
     switch (status) {
       case 0: return 'bg-primary';
-      case 1: return 'bg-seconday';
+      case 1: return 'bg-secondary';
       case 2: return 'bg-success';
-      case 3: return 'bg-danger';
+      case 3: return 'bg-danger text-light';
       case 4: return 'bg-warning';
       case 5: return 'bg-info';
     }

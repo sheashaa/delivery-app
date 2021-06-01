@@ -57,6 +57,14 @@ export class AddressComponent implements IModalDialog {
             this.toastr.error('Please enter your building.');
             return false;
           }
+          if (Number.isNaN(this.floor)) {
+            this.toastr.error('Invalid format for floor number.');
+            return false;
+          }
+          if (Number.isNaN(this.apartment)) {
+            this.toastr.error('Invalid format for apartment number.');
+            return false;
+          }
           if (!this.longitude || !this.latitude) {
             this.toastr.error('Please select your location on map.');
             return false;

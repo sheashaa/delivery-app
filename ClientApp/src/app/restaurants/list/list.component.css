@@ -90,14 +90,32 @@
         margin: 0 2px;
       }
 
-  .restaurants .search-bar input {
-    border-bottom-left-radius: 50px;
-    border-top-left-radius: 50px;
+.search-bar {
+  width: 100%;
+}
+
+  .search-bar .btn-tags {
+    background: #ffb03b;
+    color: #fff;
+    border: none;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    transition: 0.3s;
+    padding: 12px 25px;
   }
 
-  .restaurants .search-bar .search-btn {
-    border-bottom-right-radius: 50px;
-    border-top-right-radius: 50px;
+  .search-bar .btn-clear {
+    background: #ffb03b;
+    color: #fff;
+    border: none;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    transition: 0.3s;
+    padding: 10px 20px;
   }
 
 @media (max-width: 992px) {

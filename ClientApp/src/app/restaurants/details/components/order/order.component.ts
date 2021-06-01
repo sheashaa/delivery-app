@@ -52,8 +52,10 @@ export class RestaurantOrdersComponent implements OnInit {
         for (const order of orders) {
           const ois = (order['items'] as Array<any>);
           ois.forEach(item => item.dateTime = order['dateTime']);
-          orderItems = [...orderItems, ...ois].filter(item => item['restaurantId'] == this.restaurantId);
+          orderItems = [...orderItems, ...ois];
         }
+        console.log(orderItems);
+        orderItems = orderItems.filter(item => item['restaurantId'] == this.restaurantId);
         console.log(orderItems);
         if (this.showQueued) {
           const target = orderItems.filter(item => item['status'] === 0);
@@ -101,7 +103,14 @@ export class RestaurantOrdersComponent implements OnInit {
           this.toastr.error('Order has been cancelled');
         }
         else {
-          order['status'] = status;
+          console.log(order);
+          const itemIndex = (order['items'] as Array<any>).findIndex(item => item['id'] == orderItem['id']);
+          if (itemIndex >= 0) {
+            order['items'][itemIndex]['status'] = status;
+          }
+          console.log(order);
+          const allDone = (order['items'] as Array<any>).filter(item => item['status'] == 0 || item['status'] == 1).length == 0;
+          order['status'] = allDone ? 2 : 1;
           orderItem['status'] = status;
 
           this.orderItemService.putOrderItem(orderItem['id'], orderItem).subscribe(

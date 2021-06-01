@@ -1,0 +1,33 @@
+<section id="sign-up" class="sign-up">
+  <div class="container">
+
+    <div class="row">
+
+      <div class="col-lg-4">
+        <div class="box" [routerLink]='["/authentication/register"]' [queryParams]="{ role: 'Customer' }" queryParamsHandling='merge' >
+          <span><i class="icofont-fast-food"></i></span>
+          <h4>Order food online</h4>
+          <p>Browse hundreds of restaurants and get yourself filled</p>
+        </div>
+      </div>
+
+      <div class="col-lg-4 mt-4 mt-lg-0">
+        <div class="box" [routerLink]='["/authentication/register"]' [queryParams]="{ role: 'Manager' }" queryParamsHandling='merge' >
+          <span><i class="icofont-restaurant-menu"></i></span>
+          <h4>Become a partner</h4>
+          <p>Register now and add your restaurant to reach new customers</p>
+        </div>
+      </div>
+
+      <div class="col-lg-4 mt-4 mt-lg-0">
+        <div class="box" [routerLink]='["/authentication/register"]' [queryParams]="{ role: 'Courier' }" queryParamsHandling='merge' >
+          <span><i class="icofont-delivery-time"></i></span>
+          <h4>Earn money</h4>
+          <p>Sign up and earn money by delivering meals to customers</p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>

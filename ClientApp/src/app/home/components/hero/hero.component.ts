@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthorizationService } from '../../../shared/authorization/authorization.service';
-import { RestaurantService } from '../../../shared/services/restaurant.service';
 
 @Component({
   selector: 'app-hero',
@@ -11,8 +10,7 @@ import { RestaurantService } from '../../../shared/services/restaurant.service';
 export class HeroComponent {
   private isAuthenticated: boolean;
 
-  private restaurants = [];
-  private searchText: string = "";
+  private searchText: string;
 
   constructor(private authorizeService: AuthorizationService, private router: Router) {
     this.authorizeService.isAuthenticated().subscribe(
@@ -22,6 +20,6 @@ export class HeroComponent {
   }
 
   search() {
-    
+    this.router.navigate(['./restaurants'], { queryParams: { 'searchText': this.searchText } });
   }
 }

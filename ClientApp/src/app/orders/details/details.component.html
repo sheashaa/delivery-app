@@ -1,12 +1,70 @@
-<section class="inner-page">
-  <div class="section-title">
-    <h2><span>Order Information</span></h2>
+<section *ngIf="order" class="inner-page">
+  <div class="container">
+    <div class="section-title">
+      <h2><span>Order Information</span></h2>
+    </div>
+    <div class="row order-details justify-content-center">
+      <div class="col-12 col-md-4">
+        <p>Order: <span>#{{ order.id }}</span></p>
+      </div>
+      <div class="col-12 col-md-8">
+        <p>Date: <span>{{ getDateTime(order.dateTime) }}</span></p>
+      </div>
+      <div class="col-12">
+        <p>Address: <span>{{ order.building | titlecase }} {{ order.streetName | titlecase }}, {{ order.city | titlecase }}</span></p>
+      </div>
+      <div *ngIf="order['floor']" class="col-12 col-md-6">
+        <p>Floor: <span>{{ order.floor }}</span></p>
+      </div>
+      <div *ngIf="order['apartment']" class="col-12 col-md-6">
+        <p>Apartment: <span>{{ order.apartment }}</span></p>
+      </div>
+      <div class="col-12 col-md-6">
+        <p>Customer Name: <span>{{ order.customer.firstName | titlecase }} {{ order.customer.lastName | titlecase }}</span></p>
+      </div>
+      <div class="col-12 col-md-6">
+        <p>Status: <span [ngClass]="getOrderStatusClass(order.status)">{{ getOrderStatus(order.status) }}</span></p>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Qty/$</th>
+            <th scope="col">Meal#</th>
+            <th scope="col">Status</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody *ngIf="order.items && !order.items.length">
+          <tr>
+            <td class="text-center" colspan="7">There are no orders :(</td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="order.items && order.items.length">
+          <tr *ngFor="let item of order.items; index as i" [ngClass]="getItemStatusClass(item.status)">
+            <th scope="row">{{ i + 1 }}</th>
+            <td>{{ item.name }}</td>
+            <td>{{ item.quantity }} * {{ item.price }}LE = {{ item.quantity * item.price }}LE</td>
+            <td>{{ item.mealId ? item.mealId : 'N/A' }}</td>
+            <td>{{ getItemStatus(item.status) }}</td>
+            <td>
+              <button *ngIf="item.status == 0" (click)="cancel(item)" class="btn btn-sm btn-danger m-1" data-toggle="tooltip" data-placement="top" title="Remove"><i class="icofont-ui-delete"></i></button>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr class="table-info">
+            <th scope="col" colspan="2">Total</th>
+            <td colspan="4">{{ getTotal() }}LE</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
   </div>
-  <div class="row">
-    <h3 class="col-4">Order Id: {{ id }}</h3>
-    <h3 class="col-4">Date: {{ date }}</h3>
-    <h3 class="col-4">Date: {{ time }}</h3>
-    <h3 class="col-4">Date: {{ address }}</h3>
-    <h3 class="col-4">Date: {{ address }}</h3>
-  </div>
+
+
 </section>

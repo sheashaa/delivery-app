@@ -8,23 +8,23 @@
     <div *ngIf="restaurants" class="input-group mb-3 search-bar">
       <input type="text" class="form-control" placeholder="Restaurant's Name" aria-label="Restaurant's Name" aria-describedby="basic-addon2" [(ngModel)]="searchText">
       <div class="input-group-append">
-        <button class="btn btn-danger" type="button" (click)="clear()"><i class="icofont-close"></i></button>
+        <button class="bg-danger btn-clear" type="button" (click)="clear()"><i class="icofont-close"></i></button>
       </div>
       <div class="input-group-append">
         <div *ngIf="tags" class="dropdown">
-          <button class="btn btn-danger dropdown-toggle rounded-0" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button class="bg-danger btn-tags dropdown-toggle rounded-0" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Tags
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <div *ngFor="let tag of tags; index as i" class="form-check form-check-inline dropdown-item" (click)="toggle(tag); $event.stopPropagation(); false">
-              <input class="form-check-input" type="checkbox" id="inlineCheckbox1" [checked]="isActive(tag)">
+              <input class="form-check-input" type="checkbox" id="inlineCheckbox1" [checked]="searchTags[tag]">
               <label class="form-check-label" for="inlineCheckbox1"> {{ tag }}</label>
             </div>
           </div>
         </div>
       </div>
       <div class="input-group-append">
-        <button class="btn btn-danger search-btn" type="button" (click)="search()"><i class="icofont-ui-search"></i> Search</button>
+        <button class="bg-danger search-btn" type="button" (click)="search()"><i class="icofont-ui-search"></i> Search</button>
       </div>
     </div>
     

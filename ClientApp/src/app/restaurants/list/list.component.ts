@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthorizationService } from '../../shared/authorization/authorization.service';
 import { RestaurantService } from '../../shared/services/restaurant.service';
 
@@ -8,7 +8,7 @@ import { RestaurantService } from '../../shared/services/restaurant.service';
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class RestaurantsListComponent {
+export class RestaurantsListComponent implements OnInit {
   private restaurants = [];
   private filtered = [];
   private isManager: boolean;
@@ -17,7 +17,7 @@ export class RestaurantsListComponent {
   private searchTags = {};
 
 
-  constructor(private authorizeService: AuthorizationService, private restaurantService: RestaurantService, private router: Router) {
+  constructor(private authorizeService: AuthorizationService, private restaurantService: RestaurantService, private router: Router, private route: ActivatedRoute) {
     this.authorizeService.getUser().subscribe(
       user => console.log(this.isManager = user && user['role'] === 'Manager'),
       error => console.log(error)
@@ -31,9 +31,24 @@ export class RestaurantsListComponent {
         this.tags.forEach(value => {
           this.searchTags[value] = false;
         });
+        this.route.queryParams.subscribe(
+          params => {
+            const searchText = params['searchText'];
+            if (searchText) {
+              console.log(searchText);
+              this.searchText = searchText;
+              this.search();
+            }
+          },
+          error => console.log(error)
+        )
       },
       error => console.log(error)
     );
+  }
+
+  ngOnInit() {
+    
   }
 
   capitalize(str: string) {
