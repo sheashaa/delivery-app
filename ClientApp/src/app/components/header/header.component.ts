@@ -12,6 +12,7 @@ export class HeaderComponent {
   userName: string;
   role: string;
   cartLength;
+  private isManager: boolean;
 
   constructor(private cart: CartService, private authorizeService: AuthorizationService, private router: Router) {
     this.cartLength = this.cart.length;
