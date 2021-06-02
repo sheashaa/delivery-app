@@ -1,7 +1,9 @@
-import { Component, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { ModalDialogService } from 'ngx-modal-dialog';
 import { ToastrService } from 'ngx-toastr';
 import { AuthorizationService } from '../../shared/authorization/authorization.service';
+import { DeliveryService } from '../../shared/services/delivery.service';
 import { OrderService } from '../../shared/services/order.service';
 import { AddressComponent } from '../address/address.component';
 import { OrderCancelComponent } from '../cancel/cancel.component';
@@ -10,9 +12,15 @@ import { OrderCancelComponent } from '../cancel/cancel.component';
   selector: 'app-orders-list',
   templateUrl: './list.component.html'
 })
-export class OrdersListComponent {
+export class OrdersListComponent implements OnInit {
   private currentUserId: string;
+  private currentUserRole: string;
+
+  private isCourier: boolean;
+  private isCourierAvailable: boolean;
+
   private orders;
+  private currentDeliveringOrderId;
 
   private showQueued;
   private showPreparing;
@@ -21,9 +29,31 @@ export class OrdersListComponent {
   private showDelivered;
   private showCancelled;
 
-  constructor(private modalDialogService: ModalDialogService, private viewContainer: ViewContainerRef, private toastr: ToastrService, private authorizeService: AuthorizationService, private orderService: OrderService) {
+  constructor(private modalDialogService: ModalDialogService, private viewContainer: ViewContainerRef, private toastr: ToastrService, private authorizeService: AuthorizationService, private orderService: OrderService, private deliveryService: DeliveryService, private router: Router) {
     this.authorizeService.getUser().subscribe(
-      user => this.currentUserId = user && user['id'],
+      user => {
+        this.currentUserId = user && user['id'];
+        this.currentUserRole = user && user['role'];
+        this.isCourier = this.currentUserRole === 'Courier';
+        //this.isCustomer = this.currentUserRole === 'Customer';
+        if (this.isCourier) {
+          this.deliveryService.getDeliveries().subscribe(
+            _deliveries => {
+              const deliveries = _deliveries.body as [] || [];
+              const courierDeliveries = deliveries.filter(delivery => delivery['courierId'] == this.currentUserId && delivery['order']['status'] == 3);
+              this.isCourierAvailable = courierDeliveries.length == 0;
+              if (!this.isCourierAvailable) {
+                this.currentDeliveringOrderId = courierDeliveries[0]['orderId'];
+              }
+              else {
+                this.currentDeliveringOrderId = null;
+              }
+            },
+            error => console.log(error)
+          );
+        }
+        
+      },
       error => console.log(error)
     );
     this.showQueued = true;
@@ -32,6 +62,9 @@ export class OrdersListComponent {
     this.showDelivering = false;
     this.showDelivered = false;
     this.showCancelled = false;
+  }
+
+  ngOnInit() {
     this.getOrders();
   }
 
@@ -68,7 +101,10 @@ export class OrdersListComponent {
     this.orders = [];
     this.orderService.getOrders().subscribe(
       _orders => {
-        const orders = _orders.body as [];
+        let orders: Array<any> = _orders.body as [];
+        if (this.currentUserRole == 'Customer') {
+          orders = orders.filter(order => order['customerId'] == this.currentUserId);
+        }
         if (this.showQueued) {
           const target = orders.filter(order => order['status'] === 0);
           target.sort(this.sortDateTime);
@@ -128,5 +164,39 @@ export class OrdersListComponent {
 
   isQueued(status) {
     return status === 0;
+  }
+
+  isDeliverable(status) {
+    return status == 2;
+  }
+
+  goToCurrentDelivery() {
+    console.log('hero');
+    if (this.currentDeliveringOrderId) {
+      this.router.navigate(['./orders/details', this.currentDeliveringOrderId]);
+    }
+  }
+
+  deliver(order) {
+    const delivery = {
+      orderId: order['id'],
+      courierId: this.currentUserId
+    };
+    this.deliveryService.postDelivery(delivery).subscribe(
+      delivery => {
+        order['status'] = 3;
+        this.orderService.putOrder(order['id'], order).subscribe(
+          result => {
+            this.toastr.success(`You are delivering Order: #${order['id']}. Please go to current delivery page to track order.`);
+          },
+          error => console.log(error)
+        );
+      },
+      error => console.log(error)
+    );
+  }
+
+  isCustomer(order) {
+    return order['customerId'] == this.currentUserId;
   }
 }

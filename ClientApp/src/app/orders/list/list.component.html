@@ -1,8 +1,9 @@
 <section class="inner-page">
   <div class="container">
 
-    <div class="section-title">
+    <div class="section-title" [ngClass]="isCourier ? 'd-flex justify-content-between' : ''">
       <h2><span>Orders</span></h2>
+      <button *ngIf="isCourier && !isCourierAvailable" class="btn-rounded btn-lg bg-success" (click)="goToCurrentDelivery()"><i class="icofont-delivery-time"></i> Current Delivery</button>
     </div>
 
     <div class="btn-group btn-group-toggle p-2 w-100" role="group" data-toggle="buttons">
@@ -32,24 +33,29 @@
           <tr>
             <th scope="col">#</th>
             <th scope="col">Date</th>
+            <th *ngIf="isCourier" scope="col">Address</th>
+            <th *ngIf="isCourier" scope="col">Phone</th>
             <th scope="col">Status</th>
             <th scope="col"></th>
           </tr>
         </thead>
         <tbody *ngIf="orders && !orders.length">
           <tr>
-            <td class="text-center" colspan="4">There are no orders :(</td>
+            <td class="text-center" [attr.colspan]="isCourier ? 6 : 4">There are no orders :(</td>
           </tr>
         </tbody>
         <tbody *ngIf="orders && orders.length">
           <tr *ngFor="let order of orders; index as i" [ngClass]="getStatusClass(order.status)">
             <th scope="row">{{ i + 1 }}</th>
             <td>{{ getDateTime(order.dateTime) }}</td>
+            <td *ngIf="isCourier">{{ order.address }}</td>
+            <td *ngIf="isCourier">{{ order.customer.phone }}</td>
             <td>{{ getStatus(order.status) }}</td>
             <td>
               <button class="btn btn-sm btn-info mr-2" data-toggle="tooltip" data-placement="top" title="Order Details" [routerLink]='["./details", order.id]'><i class="icofont-info"></i></button>
-              <button *ngIf="isQueued(order.status)" class="btn btn-sm btn-warning mr-2" data-toggle="tooltip" data-placement="top" title="Change Address" (click)="changeAddress(order.id)"><i class="icofont-google-map"></i></button>
-              <button *ngIf="isQueued(order.status)" class="btn btn-sm btn-danger mr-2" data-toggle="tooltip" data-placement="top" title="Cancel Order" (click)="cancel(order.id)"><i class="icofont-close"></i></button>
+              <button *ngIf="isCustomer(order) && isQueued(order.status)" class="btn btn-sm btn-warning mr-2" data-toggle="tooltip" data-placement="top" title="Change Address" (click)="changeAddress(order.id)"><i class="icofont-google-map"></i></button>
+              <button *ngIf="isCustomer(order) && isQueued(order.status)" class="btn btn-sm btn-danger mr-2" data-toggle="tooltip" data-placement="top" title="Cancel Order" (click)="cancel(order.id)"><i class="icofont-close"></i></button>
+              <button *ngIf="isCourier && isCourierAvailable && isDeliverable(order.status)" class="btn btn-sm btn-secondary mr-2" data-toggle="tooltip" data-placement="top" title="Deliver" (click)="deliver(order)"><i class="icofont-fast-delivery"></i></button>
             </td>
           </tr>
         </tbody>

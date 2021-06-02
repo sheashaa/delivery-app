@@ -28,6 +28,7 @@ export class HeaderComponent {
       user => {
         this.userName = user && user.name;
         this.role = user && user.role;
+        this.isManager = this.role == 'Manager';
       },
       error => console.log(error)
     );

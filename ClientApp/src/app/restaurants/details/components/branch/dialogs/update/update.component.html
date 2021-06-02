@@ -11,5 +11,5 @@
   <div class="col-12 form-group">
     <input type="text" name="street" class="form-control" id="street" placeholder="Street" [(ngModel)]="street">
   </div>
-  <app-map *ngIf="isLoaded" (onLocationChanged)="setLocation($event)" [latitude]="latitude" [longitude]="longitude" style="width: 100%; height: 300px"></app-map>
+  <app-map *ngIf="isLoaded" (onLocationChanged)="setLocation($event)" [waypoints]="waypoint" style="width: 100%; height: 300px"></app-map>
 </div>

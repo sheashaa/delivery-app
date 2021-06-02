@@ -1,9 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
 import { AuthorizationService } from '../../shared/authorization/authorization.service';
+import { MapService } from '../../shared/services/map.service';
 import { OrderService } from '../../shared/services/order.service';
 import { OrderItemService } from '../../shared/services/orderitem.service';
+import { RestaurantService } from '../../shared/services/restaurant.service';
 
 @Component({
   selector: 'app-order-details',
@@ -13,22 +16,28 @@ export class OrdersDetailsComponent {
   private orderId;
   private order;
   private currentUserId;
+  private currentUserRole;
+  private waypoints: Array<Array<any>> = [];
+  private isLoaded: boolean = false;
+  private isCourier: boolean;
+  private isDelivering: boolean;
 
-  constructor(private route: ActivatedRoute, private toastr: ToastrService, private orderService: OrderService, private authorizeService: AuthorizationService, private router: Router, private orderItemService: OrderItemService) {
-
+  constructor(private mapService: MapService, private restaurantService: RestaurantService, private route: ActivatedRoute, private toastr: ToastrService, private orderService: OrderService, private authorizeService: AuthorizationService, private router: Router, private orderItemService: OrderItemService) {
     this.route.params.subscribe(
       params => {
         this.orderId = params['id'];
         this.orderService.getOrder(this.orderId).subscribe(
           order => {
             this.order = order;
+            this.setMapWaypoints(order);
             console.log(this.order);
             this.authorizeService.getUser().subscribe(
               user => {
                 this.currentUserId = user && user['id'];
-                if (this.currentUserId != this.order['customer']['id']) {
-                  this.router.navigate(['./']);
-                }
+                this.currentUserRole = user && user['role'];
+                this.isCourier = this.currentUserRole == 'Courier';
+
+                //this.deliveryService.getDeliveries()
               },
               error => console.log(error)
             );
@@ -141,4 +150,74 @@ export class OrdersDetailsComponent {
     const equal = all == (prepared + cancelled);
     return queuedAndPreparing == 0 && equal;
   }
+
+  setMapWaypoints(order) {
+    this.waypoints = [];
+    this.restaurantService.getRestaurants().subscribe(
+      _restaurants => {
+        const restaurants = _restaurants.body as Array<any> || [];
+        const customer = [order['longitude'], order['latitude']];
+        console.log('customer: ' + customer);
+        for (const item of order['items']) {
+          const restaurant = restaurants.find(restaurant => restaurant['id'] == item['restaurantId']);
+          if (!restaurant) { // this should NOT ever happen, otherwise it means something horrible happended
+            this.toastr.error('Something horrible internally :(');
+            return;
+          } else {
+            console.log(restaurant);
+            const closest = this.getClosestBranch(restaurant['branches'], customer);
+            if (!closest) {
+              this.toastr.warning(`Please contact '${restaurant['name']}' to get to the closest branch.`);
+            }
+            else {
+              this.waypoints.push(closest);
+            }
+          }
+        }
+        this.waypoints.push(customer);
+        this.isLoaded = true;
+        console.log(this.waypoints);
+        console.log('isLoaded: ' + this.isLoaded);
+      },
+      error => console.log(error)
+    );
+  }
+
+  getClosestBranch(branches, customer): [] {
+    if (!branches || !branches.length) return null;
+    let closest = null;
+    let minDistance = Number.MAX_VALUE;
+    for (const branch of branches) {
+      const b = [branch['longitude'], branch['latitude']];
+      const distance = this.getDistanceFromLatLonInKm(b, customer);
+      if (distance <= minDistance) {
+        closest = b;
+        minDistance = distance;
+      }
+    }
+    return closest;
+  }
+
+  getDistanceFromLatLonInKm(coord1, coord2) {
+    const lon1 = coord1[0];
+    const lat1 = coord1[1];
+    const lon2 = coord2[0];
+    const lat2 = coord2[1];
+    var R = 6371; // Radius of the earth in km
+    var dLat = this.deg2rad(lat2 - lat1);  // deg2rad below
+    var dLon = this.deg2rad(lon2 - lon1);
+    var a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2)
+      ;
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c; // Distance in km
+    return d;
+  }
+
+  deg2rad(deg) {
+    return deg * (Math.PI / 180)
+  }
+
 }

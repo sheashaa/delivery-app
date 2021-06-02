@@ -20,10 +20,9 @@ export class AddressComponent implements IModalDialog {
   private city: string;
   private streetName: string;
   private building: string;
-  private floor: string;
-  private apartment: string;
-  private latitude: number;
-  private longitude: number;
+  private floor: number;
+  private apartment: number;
+  private waypoint: Array<Array<any>> = [];
   private currentUserId: string;
   private isNewOrder: boolean;
   private orderId: number;
@@ -39,8 +38,8 @@ export class AddressComponent implements IModalDialog {
       this.building = address.building;
       this.floor = address.floor;
       this.apartment = address.apartment;
-      this.latitude = address.latitude;
-      this.longitude = address.longitude;
+      this.waypoint = [];
+      this.waypoint.push([address.longitude, address.latitude]);
     }
     this.actionButtons = [
       {
@@ -65,7 +64,7 @@ export class AddressComponent implements IModalDialog {
             this.toastr.error('Invalid format for apartment number.');
             return false;
           }
-          if (!this.longitude || !this.latitude) {
+          if (!this.waypoint || !Array.isArray(this.waypoint) || this.waypoint.length != 1) {
             this.toastr.error('Please select your location on map.');
             return false;
           }
@@ -80,8 +79,8 @@ export class AddressComponent implements IModalDialog {
             building: this.building,
             floor: this.floor,
             apartment: this.apartment,
-            latitude: this.latitude,
-            longitude: this.longitude
+            latitude: this.waypoint[0][1],
+            longitude: this.waypoint[0][0],
           };
 
           console.log(address);
@@ -158,8 +157,8 @@ export class AddressComponent implements IModalDialog {
                   building: this.building,
                   floor: this.floor,
                   apartment: this.apartment,
-                  latitude: this.latitude,
-                  longitude: this.longitude,
+                  latitude: this.waypoint[0][1],
+                  longitude: this.waypoint[0][0],
                   customerId: order['customerId'],
                   status: order['status']
                 };
@@ -199,7 +198,7 @@ export class AddressComponent implements IModalDialog {
   }
 
   setLocation(event) {
-    this.longitude = event.longitude;
-    this.latitude = event.latitude;
+    this.waypoint = [];
+    this.waypoint.push([event.longitude, event.latitude]);
   }
 }

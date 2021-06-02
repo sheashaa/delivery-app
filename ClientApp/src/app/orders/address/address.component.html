@@ -9,10 +9,10 @@
     <input type="text" name="building" class="form-control" id="building" placeholder="Building" [(ngModel)]="building">
   </div>
   <div class="col-6 form-group">
-    <input type="text" name="floor" class="form-control" id="floor" placeholder="Floor" [(ngModel)]="floor">
+    <input type="number" name="floor" class="form-control" id="floor" placeholder="Floor" [(ngModel)]="floor">
   </div>
   <div class="col-6 form-group">
-    <input type="text" name="apartment" class="form-control" id="apartment" placeholder="Apartment" [(ngModel)]="apartment">
+    <input type="number" name="apartment" class="form-control" id="apartment" placeholder="Apartment" [(ngModel)]="apartment">
   </div>
-  <app-map (onLocationChanged)="setLocation($event)" [latitude]="latitude" [longitude]="longitude" style="width: 100%; height: 300px; padding: 10px;"></app-map>
+  <app-map (onLocationChanged)="setLocation($event)" [waypoints]="waypoint" style="width: 100%; height: 300px; padding: 10px;"></app-map>
 </div>

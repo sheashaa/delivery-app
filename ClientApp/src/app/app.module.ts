@@ -19,8 +19,6 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { DeliveryModule } from './delivery/delivery.module';
-
 
 @NgModule({
   declarations: [
@@ -36,7 +34,6 @@ import { DeliveryModule } from './delivery/delivery.module';
     HomeModule,
     RestaurantsModule,
     OrdersModule,
-    DeliveryModule,
     SharedModule,
     RouterModule.forRoot([
       { path: '**', component: NotFoundComponent },

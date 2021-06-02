@@ -15,8 +15,7 @@ export class BranchDetailsDialogComponent implements IModalDialog {
   actionButtons: IModalDialogButton[];
 
   private branchId: number;
-  private latitude: number;
-  private longitude: number;
+  private waypoint: Array<Array<any>> = [];
 
   private isLoaded: boolean;
 
@@ -30,8 +29,7 @@ export class BranchDetailsDialogComponent implements IModalDialog {
   dialogInit(reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions<any>>) {
     this.branchId = options.data.branchId;
     this.branchService.getBranch(this.branchId).subscribe(branch => {
-      this.latitude = parseFloat(branch['latitude']);
-      this.longitude = parseFloat(branch['longitude']);
+      this.waypoint.push([parseFloat(branch['longitude']), parseFloat(branch['latitude'])]);
       this.isLoaded = true;
     });
   }

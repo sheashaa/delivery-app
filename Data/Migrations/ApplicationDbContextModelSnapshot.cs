@@ -442,21 +442,21 @@ namespace DeliveryApp.Data.Migrations
                         new
                         {
                             Id = "0A3A9831-8DBA-4F86-996A-FD3A40CC0030",
-                            ConcurrencyStamp = "55c371b9-2b54-41b8-836a-0838dd721ffb",
+                            ConcurrencyStamp = "eb6fb61b-1b10-45e0-b6d3-5b7a6ef065b5",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
                             Id = "3E0A855D-6FCB-4C23-850E-C13B567621A5",
-                            ConcurrencyStamp = "a94cf05f-a7df-4e25-b834-20943bf261e0",
+                            ConcurrencyStamp = "84ba5931-403b-40a8-8010-84447a837d8b",
                             Name = "Courier",
                             NormalizedName = "COURIER"
                         },
                         new
                         {
                             Id = "4973D731-E8B6-4982-8D96-0E4A0368E581",
-                            ConcurrencyStamp = "e1a08b0d-0281-48f2-aa74-cdfec5c662ca",
+                            ConcurrencyStamp = "dc4e48d7-8ca7-49b2-b8d8-7f347bf71cbf",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });

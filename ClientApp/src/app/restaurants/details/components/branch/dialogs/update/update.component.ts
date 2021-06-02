@@ -17,8 +17,7 @@ export class BranchUpdateDialogComponent implements IModalDialog {
   private governorate: string;
   private city: string;
   private street: string;
-  private latitude: number;
-  private longitude: number;
+  private waypoint: Array<Array<any>> = [];
   private phone: string;
   private restaurantId: number;
   private managerId: string;
@@ -46,7 +45,7 @@ export class BranchUpdateDialogComponent implements IModalDialog {
             this.toastr.error('Please enter branch phone.');
             return false;
           }
-          if (!this.longitude || !this.latitude) {
+          if (!this.waypoint || !Array.isArray(this.waypoint) || this.waypoint.length != 1) {
             this.toastr.error('Please select branch location on map.');
             return false;
           }
@@ -64,8 +63,8 @@ export class BranchUpdateDialogComponent implements IModalDialog {
             city: this.city,
             street: this.street,
             phone: this.phone,
-            latitude: this.latitude,
-            longitude: this.longitude,
+            latitude: this.waypoint[0][1],
+            longitude: this.waypoint[0][0],
             restaurantId: this.restaurantId
           };
 
@@ -98,8 +97,8 @@ export class BranchUpdateDialogComponent implements IModalDialog {
       this.city = branch['city'];
       this.street = branch['street'];
       this.phone = branch['phone'];
-      this.longitude = parseFloat(branch['longitude']);
-      this.latitude = parseFloat(branch['latitude']);
+      this.waypoint = [];
+      this.waypoint.push([parseFloat(branch['longitude']), parseFloat(branch['latitude'])]);
       this.restaurantId = parseInt(branch['restaurantId']);
       this.managerId = branch['restaurant']['managerId'];
       this.isLoaded = true;
@@ -107,7 +106,7 @@ export class BranchUpdateDialogComponent implements IModalDialog {
   }
 
   setLocation(event) {
-    this.longitude = event.longitude;
-    this.latitude = event.latitude;
+    this.waypoint = [];
+    this.waypoint.push([event.longitude, event.latitude]);
   }
 }
