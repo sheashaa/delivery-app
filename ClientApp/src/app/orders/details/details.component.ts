@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { AuthorizationService } from '../../shared/authorization/authorization.service';
+import { DeliveryService } from '../../shared/services/delivery.service';
 import { MapService } from '../../shared/services/map.service';
 import { OrderService } from '../../shared/services/order.service';
 import { OrderItemService } from '../../shared/services/orderitem.service';
@@ -21,8 +22,9 @@ export class OrdersDetailsComponent {
   private isLoaded: boolean = false;
   private isCourier: boolean;
   private isDelivering: boolean;
+  private isDelivered: boolean;
 
-  constructor(private mapService: MapService, private restaurantService: RestaurantService, private route: ActivatedRoute, private toastr: ToastrService, private orderService: OrderService, private authorizeService: AuthorizationService, private router: Router, private orderItemService: OrderItemService) {
+  constructor(private mapService: MapService, private restaurantService: RestaurantService, private route: ActivatedRoute, private toastr: ToastrService, private orderService: OrderService, private authorizeService: AuthorizationService, private router: Router, private orderItemService: OrderItemService, private deliveryService: DeliveryService) {
     this.route.params.subscribe(
       params => {
         this.orderId = params['id'];
@@ -36,8 +38,14 @@ export class OrdersDetailsComponent {
                 this.currentUserId = user && user['id'];
                 this.currentUserRole = user && user['role'];
                 this.isCourier = this.currentUserRole == 'Courier';
-
-                //this.deliveryService.getDeliveries()
+                this.deliveryService.getDeliveries().subscribe(
+                  _deliveries => {
+                    const deliveries = _deliveries.body as [] || [];
+                    const delivery = deliveries.filter(delivery => delivery['orderId'] == this.orderId && delivery['courierId'] == this.currentUserId);
+                    this.isDelivering = delivery.length == 1 && delivery[0]['order']['status'] == 3;
+                    this.isDelivered = delivery.length == 1 && delivery[0]['order']['status'] == 4;
+                  }
+                );
               },
               error => console.log(error)
             );
@@ -109,7 +117,7 @@ export class OrdersDetailsComponent {
             order['status'] = 5;
           }
           else if (this.isDeliverable(order)) {
-            order['status'] = 3;
+            order['status'] = 2;
           }
 
           this.orderItemService.putOrderItem(item['id'], item).subscribe(
@@ -220,4 +228,19 @@ export class OrdersDetailsComponent {
     return deg * (Math.PI / 180)
   }
 
+  finished() {
+    if (this.isDelivering) {
+      this.order['status'] = 4;
+      this.orderService.putOrder(this.orderId, this.order).subscribe(
+        result => {
+          this.toastr.success('Thank you for your work :D');
+          this.router.navigate(['./orders']);
+        },
+        error => console.log(error)
+      );
+    } else {
+      this.toastr.error('Something is not right.');
+    }
+    
+  }
 }

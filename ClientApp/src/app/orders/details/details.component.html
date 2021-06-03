@@ -2,7 +2,7 @@
   <div class="container">
     <div class="section-title" [ngClass]="isCourier ? 'd-flex justify-content-between' : ''">
       <h2><span>Order Information</span></h2>
-      <button *ngIf="isCourier && isDelivering" class="btn-rounded btn-lg bg-success" (click)="finished()"><i class="icofont-delivery-time"></i> Done</button>
+      <button *ngIf="isCourier && isDelivering && !isDelivered" class="btn-rounded btn-lg bg-danger" (click)="finished()"><i class="icofont-delivery-time"></i> Done</button>
     </div>
     <div class="row order-details justify-content-center">
       <div class="col-12 col-md-4">
