@@ -1,0 +1,31 @@
+<h1>restaurnats works!</h1>
+
+<form method="GET" (ngSubmit) = "findRestaurant()">
+  <select [(ngModel)]="selectedCategories" name="CategorySelection" multiple="multiple">
+    <option *ngFor="let c of allCategories" value="{{c.id}}"> {{c.name}} </option>
+  </select>
+  <input type="submit" value="Find">
+</form>
+
+<table class="table table-bordered table-dark">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Governorate</th>
+      <th>City</th>
+      <th>Street</th>
+      <th>Products</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let r of branchesToFilter">
+      <td>{{r.name}}</td>
+      <td>{{r.governorate}}</td>
+      <td>{{r.city}}</td>
+      <td>{{r.street}}</td>
+      <td>
+        <p  *ngFor="let p of r.products">{{p.name}} : <span *ngFor="let c of p.categories" >{{c.name}}</span> </p>
+      </td>
+    </tr>
+  </tbody>
+</table>
